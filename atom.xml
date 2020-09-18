@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://aanxy.github.io</id>
     <title>anxy</title>
-    <updated>2020-09-18T02:12:46.901Z</updated>
+    <updated>2020-09-18T09:03:51.072Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://aanxy.github.io"/>
     <link rel="self" href="https://aanxy.github.io/atom.xml"/>
@@ -10,6 +10,217 @@
     <logo>https://aanxy.github.io/images/avatar.png</logo>
     <icon>https://aanxy.github.io/favicon.ico</icon>
     <rights>All rights reserved 2020, anxy</rights>
+    <entry>
+        <title type="html"><![CDATA[@observer和@observable学习]]></title>
+        <id>https://aanxy.github.io/post/observer-he-observable-xue-xi/</id>
+        <link href="https://aanxy.github.io/post/observer-he-observable-xue-xi/">
+        </link>
+        <updated>2020-09-18T02:56:43.000Z</updated>
+        <summary type="html"><![CDATA[<p>本章主要讲解mobx中observer和obervable</p>
+]]></summary>
+        <content type="html"><![CDATA[<p>本章主要讲解mobx中observer和obervable</p>
+<!-- more -->
+<h2 id="observable">observable</h2>
+<p><strong>1、 observable用法</strong></p>
+<ul>
+<li>
+<p>observable(value)</p>
+<pre><code> var appState  = observable({
+  count:0
+  })
+</code></pre>
+</li>
+<li>
+<p>@observable</p>
+<pre><code>@observable count = 0
+</code></pre>
+</li>
+</ul>
+<p><strong>2、observable值</strong><br>
+Observable 值可以是JS基本数据类型、引用类型、普通对象、类实例、数组和映射，匹配类型应用了以下转换规则，但可以通过使用调节器进行微调</p>
+<ul>
+<li>如果 value 是ES6的 Map : 会返回一个新的 Observable Map。如果你不只关注某个特定entry的更改，而且对添加或删除其他entry时也做出反应的话，那么 Observable maps 会非常有用</li>
+<li>如果 value 是数组，会返回一个 Observable Array。</li>
+<li>如果 value 是没有原型的对象，那么对象会被克隆并且所有的属性都会被转换成可观察的。参见 Observable Object</li>
+<li>如果 value 是有原型的对象，JavaSript 原始数据类型或者函数，会返回一个 Boxed Observable。MobX 不会将一个有原型的对象自动转换成可观察的，因为这是它构造函数的职责。在构造函数中使用 extendObservable 或者在类定义中使用 @observable。</li>
+<li>如果 value 是有原型的对象，JavaSript 原始数据类型或者函数，observable 会抛出。如果想要为这样的值创建一个独立的可观察引用，请使用 Boxed Observable observable 代替。MobX 不会将一个有原型的对象自动转换成可观察的，因为这是它构造函数的职责。在构造函数中使用 extendObservable 或在类定义上使用 @observable / decorate 。<pre><code>    const map = observable.map({ key: &quot;value&quot; });
+    map.set(&quot;key&quot;, &quot;new value&quot;);
+
+    const list = observable([1, 2, 4]);
+    list[2] = 3;
+
+    const person = observable({
+    firstName: &quot;Clive Staples&quot;,
+    lastName: &quot;Lewis&quot;
+    });
+    person.firstName = &quot;C.S.&quot;;
+
+    const temperature = observable.box(20);
+    temperature.set(25);
+
+    appState.increment = function () {
+    this.count++;
+    };
+    appState.decrement = function () {
+    this.count--;
+    };
+</code></pre>
+</li>
+</ul>
+<p><img src="https://aanxy.github.io/post-images/1600415694400.png" alt="" loading="lazy"><br>
+代码运行如下：</p>
+<pre><code>import React from &quot;react&quot;;
+import { observable } from &quot;mobx&quot;;
+import { observer } from &quot;mobx-react&quot;;
+import ReactDOM from &quot;react-dom&quot;;
+import &quot;./styles.css&quot;;
+
+var appState = observable({
+  count: 0
+});
+appState.increment = function () {
+  this.count++;
+};
+appState.decrement = function () {
+  this.count--;
+};
+@observer
+class Mobxdemo extends React.Component {
+  componentDidMount() {
+    console.log(this.props.store);
+    this.handleInc = this.handleInc.bind(this);
+    this.handleDec = this.handleDec.bind(this);
+  }
+  render() {
+    // render内容
+    console.log(this.props.store);
+    return (
+      &lt;div&gt;
+        Counter:{this.props.store.count}
+        &lt;br /&gt;
+        &lt;button onClick={this.handleInc}&gt;+&lt;/button&gt;
+        &lt;button onClick={this.handleDec}&gt;-&lt;/button&gt;
+      &lt;/div&gt;
+    );
+  }
+  handleInc = () =&gt; {
+    console.log(this.props.store);
+    this.props.store.increment();
+  };
+  handleDec = () =&gt; {
+    this.props.store.decrement();
+  };
+}
+
+ReactDOM.render(&lt;Mobxdemo store={appState} /&gt;, document.getElementById(&quot;root&quot;));
+</code></pre>
+<p><img src="https://aanxy.github.io/post-images/1600414923084.png" alt="" loading="lazy"><br>
+<strong>3、@observable</strong><br>
+装饰器可以在 ES7 或者 TypeScript 类属性中属性使用，将其转换成可观察的。 @observable 可以在实例字段和属性 getter 上使用。 对于对象的哪部分需要成为可观察的，@observable 提供了细粒度的控制。<br>
+代码运行如下：</p>
+<pre><code>import { observable, computed } from &quot;mobx&quot;;
+
+class OrderLine {
+    @observable price = 0;
+    @observable amount = 1;
+
+    @computed get total() {
+        return this.price * this.amount;
+    }
+}
+</code></pre>
+<p><strong>4、observable值——arrays</strong></p>
+<ul>
+<li>observable观察数组，数组中的所有值都将变为可观察的<pre><code>observable([
+  { title: &quot;Spoil tea&quot;, completed: true },
+  { title: &quot;Make coffee&quot;, completed: false }
+  ])
+</code></pre>
+</li>
+<li>传入 { deep: false } 作为第三个参数可以禁用属性值的自动转换<pre><code>observable.array(values, { deep: false })
+</code></pre>
+</li>
+<li>传入 { name: &quot;my object&quot; } 为本对象赋予友好的调试名称<pre><code>observable.array(values, { name: &quot;my array&quot; })
+</code></pre>
+</li>
+<li>clear() - 从数组中删除所有项</li>
+<li>replace(newItems) - 用新项替换数组中所有已存在的项</li>
+<li>find(predicate: (item, index, array) =&gt; boolean, thisArg?) - 基本上等同于 ES7 的 Array.find 提议。</li>
+<li>findIndex(predicate: (item, index, array) =&gt; boolean, thisArg?) - 基本上等同于 ES7 的 Array.findIndex 提议</li>
+<li>remove(value) - 通过值从数组中移除一个单个的项。如果项被找到并移除的话，返回 true 。</li>
+<li>[MobX 4 及以下版本] peek() - 和 slice() 类似， 返回一个有所有值的数组并且数组可以放心的传递给其它库</li>
+<li><strong>observableArray.sort</strong> 和 <strong>observableArray.reverse</strong> 不会改变数组本身，而只是返回一个排序过/反转过的拷贝。在 MobX 5 及以上版本中会出现警告。推荐使用 <strong>array.slice().sort()</strong> 来替代。</li>
+<li>请记住无论如何 <strong>Array.isArray(observable([]))</strong> 都将返回 <strong>false</strong> ，所以无论何时当你需要传递 observable 数组到外部库时，<strong>Array.isArray(observable([]).slice())</strong> 会返回 <strong>true</strong></li>
+</ul>
+<p><strong>5、observable值——map</strong></p>
+<blockquote>
+<p>observable.map(values?) - 创建一个动态键的 observable 映射。 如果你不但想对一个特定项的更改做出反应，而且对添加或删除该项也做出反应的话，那么 observable 映射会非常有用<br>
+observable.map(values) 中的 values 可以是对象、 数组或者字符串键的 ES6 map。</p>
+</blockquote>
+<p>通过 ES6 Map 构造函数，你可以使用 observable(new Map()) 或使用装饰器 @observable map = new Map() 的类属性来初始化 observable 映射 。</p>
+<p>下列 observable 映射所暴露的方法是依据 ES6 Map 规范:</p>
+<ul>
+<li>has(key) - 返回映射是否有提供键对应的项。注意键的存在本身就是可观察的。</li>
+<li>set(key, value) - 把给定键的值设置为 value 。提供的键如果在映射中不存在的话，那么它会被添加到映射之中。</li>
+<li>delete(key) - 把给定键和它的值从映射中删除。</li>
+<li>get(key) - 返回给定键的值(或 undefined)。</li>
+<li>keys() - 返回映射中存在的所有键的迭代器。插入顺序会被保留。</li>
+<li>values() - 返回映射中存在的所有值的迭代器。插入顺序会被保留。</li>
+<li>entries() - 返回一个(保留插入顺序)的数组的迭代器，映射中的每个键值对都会对应数组中的一项 [key, value]。</li>
+<li>forEach(callback:(value, key, map) =&gt; void, thisArg?) - 为映射中每个键值对调用给定的回调函数。</li>
+<li>clear() - 移除映射中的所有项。</li>
+<li>size - 返回映射中项的数量。</li>
+</ul>
+<p>以下函数不属于 ES6 规范，而是由 MobX 提供:</p>
+<ul>
+<li>toJS() - 将 observable 映射转换成普通映射。</li>
+<li>toJSON(). 返回此映射的浅式普通对象表示。(想要深拷贝，请使用 mobx.toJS(map))</li>
+<li>intercept(interceptor) - 可以用来在任何变化作用于映射前将其拦截。参见 observe &amp; intercept。</li>
+<li>observe(listener, fireImmediately?) - 注册侦听器，在映射中的每个更改时触发，类似于为 Object.observe 发出的事件。想了解更多详情，请参见 observe &amp; intercept。</li>
+<li>merge(values) - 把提供对象的所有项拷贝到映射中。values 可以是普通对象、entries 数组或者 ES6 字符串键的映射。</li>
+<li>replace(values) - 用提供值替换映射全部内容。是 .clear().merge(values) 的简写形式。</li>
+<li>禁用属性值自动转换<code>observable.map(values, { deep: false })</code></li>
+<li>为对象命名<code>observable.map(values, { name: &quot;my map&quot; })</code></li>
+</ul>
+<p><strong>6、observable值——box</strong><br>
+在极少数情况下，拥有一个不属于某个对象的可观察的“原始类型值”还是很方便的。 对于这种情况，可以创建一个 observable box 以便管理这样的原始类型值。</p>
+<ul>
+<li>
+<p><code>observable.box(value)</code><br>
+（1）observable.box(value) 接收任何值并把值存储到箱子中。 使用 .get() 可以获取当前值，使用 .set(newValue) 可以更新值。<br>
+（2）.get()返回当前值。<br>
+（3）.set(value) - 替换当前存储的值并通知所有观察者。<br>
+（4）intercept(interceptor) - 可以用来在任何变化应用前将其拦截。参见 observe &amp; intercept。<br>
+（5）.observe(callback: (change) =&gt; void, fireImmediately = false):<br>
+（6）disposerFunction - 注册一个观察者函数，每次存储值被替换时触发。返回一个函数以取消观察者。参见 observe &amp; intercept。change 参数是一个对象，其中包含 observable 的 newValue 和 oldValue</p>
+</li>
+<li>
+<p><code>observable.box(value, { deep: false })</code></p>
+</li>
+<li>
+<p><code>observable.box(value, { name: &quot;my array&quot; })</code><br>
+示例</p>
+<pre><code>import { observable } from &quot;mobx&quot;;
+
+const cityName = observable.box(&quot;Vienna&quot;);
+
+console.log(cityName.get());
+// 输出 'Vienna'
+
+cityName.observe(function (change) {
+console.log(change);
+console.log(change.oldValue, &quot;-&gt;&quot;, change.newValue);
+});
+
+cityName.set(&quot;Amsterdam&quot;);
+// 输出 'Vienna -&gt; Amsterdam'
+
+</code></pre>
+<figure data-type="image" tabindex="1"><img src="https://aanxy.github.io/post-images/1600419571627.png" alt="" loading="lazy"></figure>
+</li>
+</ul>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[数据分析之mysql]]></title>
         <id>https://aanxy.github.io/post/shu-ju-fen-xi-zhi-mysql/</id>
@@ -63,6 +274,157 @@
 <li>低廉</li>
 <li>不求甚解</li>
 </ul>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[mobx初级学习]]></title>
+        <id>https://aanxy.github.io/post/mobx-chu-ji-xue-xi/</id>
+        <link href="https://aanxy.github.io/post/mobx-chu-ji-xue-xi/">
+        </link>
+        <updated>2020-09-17T02:34:47.000Z</updated>
+        <content type="html"><![CDATA[<h2 id="mobx概念与机制">mobx概念与机制</h2>
+<ul>
+<li>mobx通过透明的函数响应式编程将状态管理变得简单有效。</li>
+<li>任何源自应用状态的东西都应该自然获取</li>
+<li>react与mobx结合，react根据自己提供的机制将应用状态转换为可渲染的组件树，并对其进行渲染，而mobx提供机制来存储和更新应用状态供react使用</li>
+<li>对于开发，react和mobx都提供了最优和独特的解决方案，react通过虚拟dom减少了重排的次数，mobx提供了响应式虚拟状态依赖图表，保持了应用状态与组件同步，只有在需要的时候进行更新，并且永远保持最新。</li>
+<li>工作机制<br>
+<img src="https://aanxy.github.io/post-images/1600311117102.png" alt="" loading="lazy"><br>
+首先从左往右看，事件触发了 Actions，Actions 作为唯一修改 State 的方式，修改了 State，State 的修改更新了计算值 Computed，计算值的改变引起了 Reactions 的改变，导致了 UI 的改变，Reactions 可以经过事件调用 Actions（引用自https://juejin.im/post/6844903907441770509，作者：Destiny__）</li>
+</ul>
+<h2 id="mobx特性">mobx特性</h2>
+<ul>
+<li>灵活</li>
+<li>简单</li>
+</ul>
+<h2 id="mobx劣性">mobx劣性</h2>
+<ul>
+<li>数据随处可定义，可以定义在组件内，提供state的作用，也可以单独定义在store里</li>
+<li>用户交互逻辑可以写在组件内，也可写在store里</li>
+<li>store按照页面和模块划分，分布在多处不好统一管理</li>
+<li>store实例化的时机和方式不可控</li>
+</ul>
+<h2 id="mobx核心概念">mobx核心概念</h2>
+<ul>
+<li>state：用于存储可变化的状态值</li>
+<li>actions：一些改变状态值（state）的动作</li>
+<li>computed：根据state计算得到一些值</li>
+<li>reactions：因state变化或者computed得到的value变化而引起的反应，主要是UI视图重新渲染</li>
+</ul>
+<h2 id="mobx装饰器">mobx装饰器</h2>
+<ul>
+<li>@observable： 将一个变量变得可观察。Observable 值可以是JS基本数据类型、引用类型、普通对象、类实例、数组和映射<pre><code>@observable pagination = {
+ current: 1, // 当前第几页
+ pageSize: 10, // 每页多少条json
+ total: 0,// 共多少条
+}
+@observable yearEnum = []
+</code></pre>
+</li>
+<li>@observer：常用react组件，可监视其render()里使用的可监视的变量的变化，从而做出相应<pre><code>  @observer
+  export default class ExecutePage extends React.Component {
+
+      render(){
+          return (
+              //yearEnum,pagination的变化
+          )
+      }
+  }
+</code></pre>
+</li>
+<li>@reactions，一般是将函数再执行一遍</li>
+<li>@action：改变state的值，一般是函数操作<pre><code>  @action allocExec_queryYears(planid){
+  $.ajax({
+    type: 'POST',
+    url: url
+    dataType: 'json',
+    contentType: 'application/json',
+    data: JSON.stringify(parameter),
+    success: (data) =&gt; {
+      if (data.success) {
+        this.yearEnum = Object.assign([],data.data.map((item)=&gt;{
+          item.id = item.code
+          return item
+        }))
+      } 
+    },
+    error: (xhr, status, err) =&gt; {
+      // this.hideWaitCount()
+      // GlobalStore.showError(&quot;数据请求失败,错误信息:&quot; + `${err.toString()}`);
+    }
+  });
+}
+</code></pre>
+</li>
+<li>@computed：根据可观察的值进行的一系列计算，返回新的值<pre><code> @computed get getCurrentModal(){
+  return this.currentModal=this.yearEnum
+}
+</code></pre>
+</li>
+<li>@autorun：一般用于constructor里，用来创建实例时，可监视其函数内容可观察的值的变化情况，一般再执行一遍函数</li>
+<li>@when：有条件的@autorun</li>
+</ul>
+<h2 id="react与mobx的实践应用">react与mobx的实践应用</h2>
+<p>1、 在react里使用mobx，需要安装mobx-react插件<br>
+<code>npm install mobx mobx-react --save</code><br>
+2、 创建store进行存储相关数据</p>
+<pre><code>import { observable, computed, action } from 'mobx';
+
+export default class MobxdemoStore {
+    constructor() {
+
+    }
+    @observable  age = 18 ////监听 age
+
+    @computed    //当age发生改变时， 自动触发
+    get doubleAge() {
+        return this.age *= 2
+    }
+
+    @action  // 用户操作  事件调用
+    increment() {
+        $.ajax({
+            type: 'POST',
+            url: url,
+            dataType: 'json',
+            contentType: 'application/json',
+            success:function(data){
+                this.age = data.age;
+            }
+            
+        })
+    }
+} 
+</code></pre>
+<p>3、 创建页面</p>
+<pre><code>import React from 'react';
+import { observer } from 'mobx-react';
+import MobxdemoStore from '../../stores/apportion/MobxdemoStore';
+@observer
+export default class Mobxdemo extends React.Component{
+    constructor(props){
+        super( props )
+        this.store = new MobxdemoStore();
+    }
+
+    increment = () =&gt; {
+        console.log( 'mine' )
+        this.store.count.change()
+      }
+
+    render(){
+        // render内容
+        return (
+            &lt;div&gt;
+                &lt;button onClick = { this.increment }&gt;点我+&lt;/button&gt;
+                &lt;p&gt;count:{ this.store.count.count} &lt;/p&gt;
+            &lt;/div&gt;
+                
+        )
+
+    }
+}
+</code></pre>
 ]]></content>
     </entry>
     <entry>

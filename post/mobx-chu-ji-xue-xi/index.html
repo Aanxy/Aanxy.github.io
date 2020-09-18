@@ -1,0 +1,349 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>mobx初级学习 | anxy</title>
+<link rel="shortcut icon" href="https://aanxy.github.io/favicon.ico?v=1600419812702">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
+<link rel="stylesheet" href="https://aanxy.github.io/styles/main.css">
+<link rel="alternate" type="application/atom+xml" title="mobx初级学习 | anxy - Atom Feed" href="https://aanxy.github.io/atom.xml">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
+
+
+
+    <meta name="description" content="mobx概念与机制
+
+mobx通过透明的函数响应式编程将状态管理变得简单有效。
+任何源自应用状态的东西都应该自然获取
+react与mobx结合，react根据自己提供的机制将应用状态转换为可渲染的组件树，并对其进行渲染，而mobx提供机制来..." />
+    <meta name="keywords" content="" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+    <script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+  </head>
+  <body>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="https://aanxy.github.io">
+  <img class="avatar" src="https://aanxy.github.io/images/avatar.png?v=1600419812702" alt="">
+  </a>
+  <h1 class="site-title">
+    anxy
+  </h1>
+  <p class="site-description">
+    温故而知新
+  </p>
+  <div class="menu-container">
+    
+      
+        <a href="/" class="menu">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu">
+          前端
+        </a>
+      
+    
+      
+        <a href="/tags" class="menu">
+          态度
+        </a>
+      
+    
+      
+        <a href="/post/about" class="menu">
+          书籍
+        </a>
+      
+    
+  </div>
+  <div class="social-container">
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+</div>
+
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              mobx初级学习
+            </h2>
+            <div class="post-info">
+              <span>
+                2020-09-17
+              </span>
+              <span>
+                4 min read
+              </span>
+              
+            </div>
+            
+            <div class="post-content-wrapper">
+              <div class="post-content">
+                <h2 id="mobx概念与机制">mobx概念与机制</h2>
+<ul>
+<li>mobx通过透明的函数响应式编程将状态管理变得简单有效。</li>
+<li>任何源自应用状态的东西都应该自然获取</li>
+<li>react与mobx结合，react根据自己提供的机制将应用状态转换为可渲染的组件树，并对其进行渲染，而mobx提供机制来存储和更新应用状态供react使用</li>
+<li>对于开发，react和mobx都提供了最优和独特的解决方案，react通过虚拟dom减少了重排的次数，mobx提供了响应式虚拟状态依赖图表，保持了应用状态与组件同步，只有在需要的时候进行更新，并且永远保持最新。</li>
+<li>工作机制<br>
+<img src="https://aanxy.github.io/post-images/1600311117102.png" alt="" loading="lazy"><br>
+首先从左往右看，事件触发了 Actions，Actions 作为唯一修改 State 的方式，修改了 State，State 的修改更新了计算值 Computed，计算值的改变引起了 Reactions 的改变，导致了 UI 的改变，Reactions 可以经过事件调用 Actions（引用自https://juejin.im/post/6844903907441770509，作者：Destiny__）</li>
+</ul>
+<h2 id="mobx特性">mobx特性</h2>
+<ul>
+<li>灵活</li>
+<li>简单</li>
+</ul>
+<h2 id="mobx劣性">mobx劣性</h2>
+<ul>
+<li>数据随处可定义，可以定义在组件内，提供state的作用，也可以单独定义在store里</li>
+<li>用户交互逻辑可以写在组件内，也可写在store里</li>
+<li>store按照页面和模块划分，分布在多处不好统一管理</li>
+<li>store实例化的时机和方式不可控</li>
+</ul>
+<h2 id="mobx核心概念">mobx核心概念</h2>
+<ul>
+<li>state：用于存储可变化的状态值</li>
+<li>actions：一些改变状态值（state）的动作</li>
+<li>computed：根据state计算得到一些值</li>
+<li>reactions：因state变化或者computed得到的value变化而引起的反应，主要是UI视图重新渲染</li>
+</ul>
+<h2 id="mobx装饰器">mobx装饰器</h2>
+<ul>
+<li>@observable： 将一个变量变得可观察。Observable 值可以是JS基本数据类型、引用类型、普通对象、类实例、数组和映射<pre><code>@observable pagination = {
+ current: 1, // 当前第几页
+ pageSize: 10, // 每页多少条json
+ total: 0,// 共多少条
+}
+@observable yearEnum = []
+</code></pre>
+</li>
+<li>@observer：常用react组件，可监视其render()里使用的可监视的变量的变化，从而做出相应<pre><code>  @observer
+  export default class ExecutePage extends React.Component {
+
+      render(){
+          return (
+              //yearEnum,pagination的变化
+          )
+      }
+  }
+</code></pre>
+</li>
+<li>@reactions，一般是将函数再执行一遍</li>
+<li>@action：改变state的值，一般是函数操作<pre><code>  @action allocExec_queryYears(planid){
+  $.ajax({
+    type: 'POST',
+    url: url
+    dataType: 'json',
+    contentType: 'application/json',
+    data: JSON.stringify(parameter),
+    success: (data) =&gt; {
+      if (data.success) {
+        this.yearEnum = Object.assign([],data.data.map((item)=&gt;{
+          item.id = item.code
+          return item
+        }))
+      } 
+    },
+    error: (xhr, status, err) =&gt; {
+      // this.hideWaitCount()
+      // GlobalStore.showError(&quot;数据请求失败,错误信息:&quot; + `${err.toString()}`);
+    }
+  });
+}
+</code></pre>
+</li>
+<li>@computed：根据可观察的值进行的一系列计算，返回新的值<pre><code> @computed get getCurrentModal(){
+  return this.currentModal=this.yearEnum
+}
+</code></pre>
+</li>
+<li>@autorun：一般用于constructor里，用来创建实例时，可监视其函数内容可观察的值的变化情况，一般再执行一遍函数</li>
+<li>@when：有条件的@autorun</li>
+</ul>
+<h2 id="react与mobx的实践应用">react与mobx的实践应用</h2>
+<p>1、 在react里使用mobx，需要安装mobx-react插件<br>
+<code>npm install mobx mobx-react --save</code><br>
+2、 创建store进行存储相关数据</p>
+<pre><code>import { observable, computed, action } from 'mobx';
+
+export default class MobxdemoStore {
+    constructor() {
+
+    }
+    @observable  age = 18 ////监听 age
+
+    @computed    //当age发生改变时， 自动触发
+    get doubleAge() {
+        return this.age *= 2
+    }
+
+    @action  // 用户操作  事件调用
+    increment() {
+        $.ajax({
+            type: 'POST',
+            url: url,
+            dataType: 'json',
+            contentType: 'application/json',
+            success:function(data){
+                this.age = data.age;
+            }
+            
+        })
+    }
+} 
+</code></pre>
+<p>3、 创建页面</p>
+<pre><code>import React from 'react';
+import { observer } from 'mobx-react';
+import MobxdemoStore from '../../stores/apportion/MobxdemoStore';
+@observer
+export default class Mobxdemo extends React.Component{
+    constructor(props){
+        super( props )
+        this.store = new MobxdemoStore();
+    }
+
+    increment = () =&gt; {
+        console.log( 'mine' )
+        this.store.count.change()
+      }
+
+    render(){
+        // render内容
+        return (
+            &lt;div&gt;
+                &lt;button onClick = { this.increment }&gt;点我+&lt;/button&gt;
+                &lt;p&gt;count:{ this.store.count.count} &lt;/p&gt;
+            &lt;/div&gt;
+                
+        )
+
+    }
+}
+</code></pre>
+
+              </div>
+              <div class="toc-container">
+                <ul class="markdownIt-TOC">
+<li>
+<ul>
+<li><a href="#mobx%E6%A6%82%E5%BF%B5%E4%B8%8E%E6%9C%BA%E5%88%B6">mobx概念与机制</a></li>
+<li><a href="#mobx%E7%89%B9%E6%80%A7">mobx特性</a></li>
+<li><a href="#mobx%E5%8A%A3%E6%80%A7">mobx劣性</a></li>
+<li><a href="#mobx%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5">mobx核心概念</a></li>
+<li><a href="#mobx%E8%A3%85%E9%A5%B0%E5%99%A8">mobx装饰器</a></li>
+<li><a href="#react%E4%B8%8Emobx%E7%9A%84%E5%AE%9E%E8%B7%B5%E5%BA%94%E7%94%A8">react与mobx的实践应用</a></li>
+</ul>
+</li>
+</ul>
+
+              </div>
+            </div>
+          </article>
+        </div>
+
+        
+          <div class="next-post">
+            <div class="next">下一篇</div>
+            <a href="https://aanxy.github.io/post/hello-gridea/">
+              <h3 class="post-title">
+                Hello Gridea
+              </h3>
+            </a>
+          </div>
+        
+
+        
+          
+            <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+<script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+
+<div id="gitalk-container"></div>
+
+<script>
+
+  var gitalk = new Gitalk({
+    clientID: '',
+    clientSecret: '',
+    repo: '',
+    owner: '',
+    admin: [''],
+    id: (location.pathname).substring(0, 49),      // Ensure uniqueness and length less than 50
+    distractionFreeMode: false  // Facebook-like distraction free mode
+  })
+
+  gitalk.render('gitalk-container')
+
+</script>
+
+          
+
+          
+        
+
+        <div class="site-footer">
+  Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a>
+  <a class="rss" href="https://aanxy.github.io/atom.xml" target="_blank">
+    <i class="ri-rss-line"></i> RSS
+  </a>
+</div>
+
+      </div>
+    </div>
+
+    <script>
+      hljs.initHighlightingOnLoad()
+
+      let mainNavLinks = document.querySelectorAll(".markdownIt-TOC a");
+
+      // This should probably be throttled.
+      // Especially because it triggers during smooth scrolling.
+      // https://lodash.com/docs/4.17.10#throttle
+      // You could do like...
+      // window.addEventListener("scroll", () => {
+      //    _.throttle(doThatStuff, 100);
+      // });
+      // Only not doing it here to keep this Pen dependency-free.
+
+      window.addEventListener("scroll", event => {
+        let fromTop = window.scrollY;
+
+        mainNavLinks.forEach((link, index) => {
+          let section = document.getElementById(decodeURI(link.hash).substring(1));
+          let nextSection = null
+          if (mainNavLinks[index + 1]) {
+            nextSection = document.getElementById(decodeURI(mainNavLinks[index + 1].hash).substring(1));
+          }
+          if (section.offsetTop <= fromTop) {
+            if (nextSection) {
+              if (nextSection.offsetTop > fromTop) {
+                link.classList.add("current");
+              } else {
+                link.classList.remove("current");    
+              }
+            } else {
+              link.classList.add("current");
+            }
+          } else {
+            link.classList.remove("current");
+          }
+        });
+      });
+
+    </script>
+  </body>
+</html>
