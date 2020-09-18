@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://aanxy.github.io</id>
     <title>anxy</title>
-    <updated>2020-09-17T02:26:43.291Z</updated>
+    <updated>2020-09-18T02:12:46.901Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://aanxy.github.io"/>
     <link rel="self" href="https://aanxy.github.io/atom.xml"/>
@@ -10,6 +10,61 @@
     <logo>https://aanxy.github.io/images/avatar.png</logo>
     <icon>https://aanxy.github.io/favicon.ico</icon>
     <rights>All rights reserved 2020, anxy</rights>
+    <entry>
+        <title type="html"><![CDATA[数据分析之mysql]]></title>
+        <id>https://aanxy.github.io/post/shu-ju-fen-xi-zhi-mysql/</id>
+        <link href="https://aanxy.github.io/post/shu-ju-fen-xi-zhi-mysql/">
+        </link>
+        <updated>2020-09-18T02:06:11.000Z</updated>
+        <content type="html"><![CDATA[<p>一：https://blog.csdn.net/qq_42642945/article/details/88721646<br>
+二：https://blog.csdn.net/qq_42642945/article/details/88722605<br>
+三：https://blog.csdn.net/qq_42642945/article/details/88723413<br>
+四：https://blog.csdn.net/qq_42642945/article/details/88734843<br>
+五：https://blog.csdn.net/qq_42642945/article/details/88744187<br>
+六：https://blog.csdn.net/qq_42642945/article/details/88752110<br>
+七：https://blog.csdn.net/qq_42642945/article/details/88752696<br>
+八：https://blog.csdn.net/qq_42642945/article/details/88778527<br>
+九：https://blog.csdn.net/qq_42642945/article/details/88778915<br>
+十：https://blog.csdn.net/qq_42642945/article/details/88779291<br>
+十一：https://blog.csdn.net/qq_42642945/article/details/88779979<br>
+十二:https://blog.csdn.net/qq_42642945/article/details/88782063<br>
+十三：https://blog.csdn.net/qq_42642945/article/details/88782410</p>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[学习thinking]]></title>
+        <id>https://aanxy.github.io/post/xue-xi-thinking/</id>
+        <link href="https://aanxy.github.io/post/xue-xi-thinking/">
+        </link>
+        <updated>2020-09-17T03:22:18.000Z</updated>
+        <content type="html"><![CDATA[<p>“不闻不若闻之，闻之不若见之，见之不若知之，知之不若行之，学至于行而止矣，行之，明也。”</p>
+<h2 id="知">知</h2>
+<ul>
+<li>什么？</li>
+<li>特性？</li>
+<li>为什么？</li>
+<li>如何？</li>
+<li>实现原理是什么？</li>
+<li>优缺点是什么？</li>
+<li>参考资料</li>
+<li>实际应用</li>
+</ul>
+<h2 id="行">行</h2>
+<ul>
+<li>明确学习计划</li>
+<li>敢于挑战</li>
+<li>保持求知欲</li>
+<li>寻找学习乐趣</li>
+</ul>
+<h2 id="求">求</h2>
+<ul>
+<li>充分利用导师角色</li>
+<li>多问</li>
+<li>低廉</li>
+<li>不求甚解</li>
+</ul>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[Hello Gridea]]></title>
         <id>https://aanxy.github.io/post/hello-gridea/</id>
