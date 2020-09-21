@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" >
 
-<title>文章归档 | anxy</title>
+<title>学习thinking | anxy</title>
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
@@ -12,13 +12,37 @@
 <link rel="stylesheet" href="https://aanxy.github.io/styles/main.css">
 
 
+  
+    <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css" />
+  
+
+  
+
 
 <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
 <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 
 
 
-    <meta name="description" content="温故而知新">
+    <meta name="description" content="“不闻不若闻之，闻之不若见之，见之不若知之，知之不若行之，学至于行而止矣，行之，明也。”
+知
+
+什么？
+特性？
+为什么？
+如何？
+实现原理是什么？
+优缺点是什么？
+参考资料
+实际应用
+
+行
+
+明确学习计划
+敢于挑战
+保持求知欲
+寻找学习乐趣..." />
+    <meta name="keywords" content="思考" />
   </head>
   <body>
     <div id="app" class="main">
@@ -88,80 +112,68 @@
 
       <div class="main-container">
         <div class="content-container" data-aos="fade-up">
-          
+          <div class="post-detail">
+            <h2 class="post-title">学习thinking</h2>
+            <div class="post-date">2020-09-17</div>
+            
+            <div class="post-content" v-pre>
+              <p>“不闻不若闻之，闻之不若见之，见之不若知之，知之不若行之，学至于行而止矣，行之，明也。”</p>
+<h2 id="知">知</h2>
+<ul>
+<li>什么？</li>
+<li>特性？</li>
+<li>为什么？</li>
+<li>如何？</li>
+<li>实现原理是什么？</li>
+<li>优缺点是什么？</li>
+<li>参考资料</li>
+<li>实际应用</li>
+</ul>
+<h2 id="行">行</h2>
+<ul>
+<li>明确学习计划</li>
+<li>敢于挑战</li>
+<li>保持求知欲</li>
+<li>寻找学习乐趣</li>
+</ul>
+<h2 id="求">求</h2>
+<ul>
+<li>充分利用导师角色</li>
+<li>多问</li>
+<li>低廉</li>
+<li>不求甚解</li>
+</ul>
 
-          <h2 class="archives-title">文章归档</h2>
-          <div class="archives-container">
+            </div>
             
-              <h2 class="year" data-aos="fade-in" data-aos-delay="500">2020</h2>
+              <div class="tag-container">
+                
+                  <a href="https://aanxy.github.io/ZLpSb79kl/" class="tag">
+                    思考
+                  </a>
+                
+              </div>
+            
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://aanxy.github.io/mobx-chu-ji-xue-xi/">
+                  <h3 class="post-title">
+                    mobx初级学习
+                  </h3>
+                </a>
+              </div>
+            
+
+            
               
-                
-                  <article class="post">
-                    <a href="https://aanxy.github.io/_UOLc5H2f/">
-                      <h2 class="post-title">
-                        mobx学习——@inject
-                      </h2>
-                    </a>
-                  </article>
-                
+                <div id="gitalk-container" data-aos="fade-in"></div>
               
-                
-                  <article class="post">
-                    <a href="https://aanxy.github.io/2XQTlPDiq/">
-                      <h2 class="post-title">
-                        mobx学习——autorun
-                      </h2>
-                    </a>
-                  </article>
-                
-              
-                
-                  <article class="post">
-                    <a href="https://aanxy.github.io/ZVZ_DpwsF/">
-                      <h2 class="post-title">
-                        mobx学习——computed
-                      </h2>
-                    </a>
-                  </article>
-                
-              
-                
-                  <article class="post">
-                    <a href="https://aanxy.github.io/observer-he-observable-xue-xi/">
-                      <h2 class="post-title">
-                        mobx学习——@observer和@observable学习
-                      </h2>
-                    </a>
-                  </article>
-                
-              
-                
-                  <article class="post">
-                    <a href="https://aanxy.github.io/xue-xi-thinking/">
-                      <h2 class="post-title">
-                        学习thinking
-                      </h2>
-                    </a>
-                  </article>
-                
-              
-                
-                  <article class="post">
-                    <a href="https://aanxy.github.io/mobx-chu-ji-xue-xi/">
-                      <h2 class="post-title">
-                        mobx初级学习
-                      </h2>
-                    </a>
-                  </article>
-                
+
               
             
+
           </div>
-
-          <div class="pagination-container">
-  
-  
-</div>
 
         </div>
       </div>
@@ -187,6 +199,29 @@ var app = new Vue({
     hljs.initHighlightingOnLoad()
   </script>
 
+
+
+
+  
+    <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+    <script>
+
+      var gitalk = new Gitalk({
+        clientID: '',
+        clientSecret: '',
+        repo: '',
+        owner: '',
+        admin: [''],
+        id: (location.pathname).substring(0, 49),      // Ensure uniqueness and length less than 50
+        distractionFreeMode: false  // Facebook-like distraction free mode
+      })
+
+      gitalk.render('gitalk-container')
+
+    </script>
+  
+
+  
 
 
 

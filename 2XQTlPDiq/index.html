@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>mobx学习——autorun | anxy</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="https://aanxy.github.io/favicon.ico?v=1600679815680">
+<link rel="stylesheet" href="https://aanxy.github.io/styles/main.css">
+
+
+  
+    <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css" />
+  
+
+  
+
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+
+
+    <meta name="description" content="
+当你想创建一个响应式函数，而该函数本身永远不会有观察者时,可以使用 mobx.autorun，。 这通常是当你需要从反应式代码桥接到命令式代码的情况，例如打印日志、持久化或者更新UI的代码。 当使用 autorun 时，所提供的函数总是立..." />
+    <meta name="keywords" content="" />
+  </head>
+  <body>
+    <div id="app" class="main">
+
+      <div class="sidebar" :class="{ 'full-height': menuVisible }">
+  <div class="top-container" data-aos="fade-right">
+    <div class="top-header-container">
+      <a class="site-title-container" href="https://aanxy.github.io">
+        <img src="https://aanxy.github.io/images/avatar.png?v=1600679815680" class="site-logo">
+        <h1 class="site-title">anxy</h1>
+      </a>
+      <div class="menu-btn" @click="menuVisible = !menuVisible">
+        <div class="line"></div>
+      </div>
+    </div>
+    <div>
+      
+        
+          <a href="/" class="site-nav">
+            首页
+          </a>
+        
+      
+        
+          <a href="/archives" class="site-nav">
+            归档
+          </a>
+        
+      
+        
+          <a href="/tags" class="site-nav">
+            标签
+          </a>
+        
+      
+        
+          <a href="/post/about" class="site-nav">
+            关于
+          </a>
+        
+      
+    </div>
+  </div>
+  <div class="bottom-container" data-aos="flip-up" data-aos-offset="0">
+    <div class="social-container">
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+    <div class="site-description">
+      温故而知新
+    </div>
+    <div class="site-footer">
+      Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | <a class="rss" href="https://aanxy.github.io/atom.xml" target="_blank">RSS</a>
+    </div>
+  </div>
+</div>
+
+
+      <div class="main-container">
+        <div class="content-container" data-aos="fade-up">
+          <div class="post-detail">
+            <h2 class="post-title">mobx学习——autorun</h2>
+            <div class="post-date">2020-09-21</div>
+            
+            <div class="post-content" v-pre>
+              <ul>
+<li>当你想创建一个响应式函数，而该函数本身永远不会有观察者时,可以使用 mobx.autorun，。 这通常是当你需要从反应式代码桥接到命令式代码的情况，例如打印日志、持久化或者更新UI的代码。 当使用 autorun 时，所提供的函数总是立即被触发一次，然后每次它的依赖关系改变时会再次被触发。</li>
+<li>传递给 autorun 的函数在调用后将接收一个参数，即当前 reaction(autorun)，可用于在执行期间清理 autorun。</li>
+</ul>
+<pre><code>var numbers = observable([1,2,3]);
+var sum = computed(() =&gt; numbers.reduce((a, b) =&gt; a + b, 0));
+
+var disposer = autorun(() =&gt; console.log(sum.get()));
+// 输出 '6'
+numbers.push(4);
+// 输出 '10'
+
+disposer();
+numbers.push(5);
+// 不会再输出任何值。`sum` 不会再重新计算。
+</code></pre>
+<h2 id="选项">选项</h2>
+<p>Autorun 接收第二个参数，它是一个参数对象，有如下可选的参数:</p>
+<ul>
+<li>
+<p>delay: 可用于对效果函数进行去抖动的数字(以毫秒为单位)。如果是 0(默认值) 的话，那么不会进行去抖。</p>
+</li>
+<li>
+<p>name: 字符串，用于在例如像 spy 这样事件中用作此 reaction 的名称。</p>
+<pre><code>autorun(() =&gt; {
+  // 假设 profile.asJson 返回的是 observable Json 表示，
+  // 每次变化时将其发送给服务器，但发送前至少要等300毫秒。
+  // 当发送后，profile.asJson 的最新值会被使用。
+  sendProfileToServer(profile.asJson);
+   }, { delay: 300 });
+</code></pre>
+</li>
+<li>
+<p>onError: 用来处理 reaction 的错误，而不是传播它们。<br>
+在 autorun 和所有其他类型 reaction 中抛出的异常会被捕获并打印到控制台，但不会将异常传播回原始导致异常的代码。 这是为了确保一个异常中的 reaction 不会阻止其他可能不相关的 reaction 的预定执行。 这也允许 reaction 从异常中恢复; 抛出异常不会破坏 MobX的跟踪，因此如果除去异常的原因，reaction 的后续运行可能会再次正常完成。<br>
+可以通过提供 onError 选项来覆盖 Reactions 的默认日志行为。 示例:</p>
+<pre><code>const age = observable.box(10)
+
+const dispose = autorun(() =&gt; {
+    if (age.get() &lt; 0)
+        throw new Error(&quot;Age should not be negative&quot;)
+    console.log(&quot;Age&quot;, age.get())
+}, {
+    onError(e) {
+        window.alert(&quot;Please enter a valid age&quot;)
+    }
+})
+</code></pre>
+</li>
+</ul>
+<p>一个全局的 onError 处理方法可以使用 onReactionError(handler) 来设置。这在测试或监控中很有用。</p>
+<ul>
+<li>scheduler: 设置自定义调度器以决定如何调度 autorun 函数的重新运行</li>
+</ul>
+
+            </div>
+            
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://aanxy.github.io/ZVZ_DpwsF/">
+                  <h3 class="post-title">
+                    mobx学习——computed
+                  </h3>
+                </a>
+              </div>
+            
+
+            
+              
+                <div id="gitalk-container" data-aos="fade-in"></div>
+              
+
+              
+            
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+<script type="application/javascript">
+
+AOS.init();
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
+</script>
+
+
+  <script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>
+    hljs.initHighlightingOnLoad()
+  </script>
+
+
+
+
+  
+    <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+    <script>
+
+      var gitalk = new Gitalk({
+        clientID: '',
+        clientSecret: '',
+        repo: '',
+        owner: '',
+        admin: [''],
+        id: (location.pathname).substring(0, 49),      // Ensure uniqueness and length less than 50
+        distractionFreeMode: false  // Facebook-like distraction free mode
+      })
+
+      gitalk.render('gitalk-container')
+
+    </script>
+  
+
+  
+
+
+
+
+  </body>
+</html>

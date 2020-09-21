@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>mobx学习——computed | anxy</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="https://aanxy.github.io/favicon.ico?v=1600679815680">
+<link rel="stylesheet" href="https://aanxy.github.io/styles/main.css">
+
+
+  
+    <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css" />
+  
+
+  
+
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+
+
+    <meta name="description" content="
+计算值(computed values)是可以根据现有的状态或其它计算值衍生出的值，不要将computed与autorun混淆，computed得到的值可以被其他observer所再使用，而autorun不能得到一个能够被其他observ..." />
+    <meta name="keywords" content="" />
+  </head>
+  <body>
+    <div id="app" class="main">
+
+      <div class="sidebar" :class="{ 'full-height': menuVisible }">
+  <div class="top-container" data-aos="fade-right">
+    <div class="top-header-container">
+      <a class="site-title-container" href="https://aanxy.github.io">
+        <img src="https://aanxy.github.io/images/avatar.png?v=1600679815680" class="site-logo">
+        <h1 class="site-title">anxy</h1>
+      </a>
+      <div class="menu-btn" @click="menuVisible = !menuVisible">
+        <div class="line"></div>
+      </div>
+    </div>
+    <div>
+      
+        
+          <a href="/" class="site-nav">
+            首页
+          </a>
+        
+      
+        
+          <a href="/archives" class="site-nav">
+            归档
+          </a>
+        
+      
+        
+          <a href="/tags" class="site-nav">
+            标签
+          </a>
+        
+      
+        
+          <a href="/post/about" class="site-nav">
+            关于
+          </a>
+        
+      
+    </div>
+  </div>
+  <div class="bottom-container" data-aos="flip-up" data-aos-offset="0">
+    <div class="social-container">
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+    <div class="site-description">
+      温故而知新
+    </div>
+    <div class="site-footer">
+      Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | <a class="rss" href="https://aanxy.github.io/atom.xml" target="_blank">RSS</a>
+    </div>
+  </div>
+</div>
+
+
+      <div class="main-container">
+        <div class="content-container" data-aos="fade-up">
+          <div class="post-detail">
+            <h2 class="post-title">mobx学习——computed</h2>
+            <div class="post-date">2020-09-21</div>
+            
+            <div class="post-content" v-pre>
+              <ul>
+<li>计算值(computed values)是可以根据现有的状态或其它计算值衍生出的值，不要将computed与autorun混淆，computed得到的值可以被其他observer所再使用，而autorun不能得到一个能够被其他observer所使用的新值，通常用于打印日志，发起网络请求等这样的副作用，computed它可以使实际所修改的状态尽可能的小，此外computed值还是高度优化过的，所以尽可能多的使用它。</li>
+<li>如果任何影响计算值的值发生变化了，计算值将根据状态自动进行衍生。计算值大多数情况下是被高度优化的，因为它们被认为是纯函数，例如：在前一个计算中使用的计算值没有发生变化，计算属性将不会重新运行，如果某个计算属性或者reaction未使用它，也不会重新运行，在这种情况下它将会被暂停，这个暂停是非常方便的，如果一个计算值不再被观察了，或者它所在的UI不复存在了，Mobx可以自动的将其进行垃圾回收，而autorun中的值必须手动清理才行，这点计算值是非常方便的，在实际开发中如果你需要该值一直被观察的话，可以使用 observe 或 keepAlive 来强制保持计算值总是处于唤醒状态</li>
+<li>注意计算属性是不可枚举的，它们也不能在继承链中被覆盖。</li>
+</ul>
+<h2 id="computed">@computed</h2>
+<p>如果使用了装饰器，用一下方法方便使用computed</p>
+<pre><code>import {observable, computed} from &quot;mobx&quot;;
+
+class OrderLine {
+    @observable price = 0;
+    @observable amount = 1;
+
+    constructor(price) {
+        this.price = price;
+    }
+
+    @computed get total() {
+        return this.price * this.amount;
+    }
+}
+</code></pre>
+<h2 id="computed-2">computed</h2>
+<p>没有使用装饰器用一下方式进行引入</p>
+<pre><code>import {decorate, observable, computed} from &quot;mobx&quot;;
+
+class OrderLine {
+    price = 0;
+    amount = 1;
+    constructor(price) {
+        this.price = price;
+    }
+
+    get total() {
+        return this.price * this.amount;
+    }
+}
+decorate(OrderLine, {
+    price: observable,
+    amount: observable,
+    total: computed
+})
+</code></pre>
+<p>observable.object 和 extendObservable 都会自动将 getter 属性推导成计算属性，所以下面这样就足够了:</p>
+<pre><code>const orderLine = observable.object({
+    price: 0,
+    amount: 1,
+    get total() {
+        return this.price * this.amount
+    }
+})
+</code></pre>
+<h2 id="计算值的setter">计算值的setter</h2>
+<p>注意这些 setters 不能用来直接改变计算属性的值，但是它们可以用来作“逆向”衍生。</p>
+<pre><code>const orderLine = observable.object({
+    price: 0,
+    amount: 1,
+    get total() {
+        return this.price * this.amount
+    },
+    set total(total) {
+        this.price = total / this.amount // 从 total 中推导出 price
+    }
+})
+</code></pre>
+<p><strong>注意</strong>: 永远在 getter 之后 定义 setter，一些 TypeScript 版本会知道声明了两个具有相同名称的属性。</p>
+
+            </div>
+            
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://aanxy.github.io/observer-he-observable-xue-xi/">
+                  <h3 class="post-title">
+                    mobx学习——@observer和@observable学习
+                  </h3>
+                </a>
+              </div>
+            
+
+            
+              
+                <div id="gitalk-container" data-aos="fade-in"></div>
+              
+
+              
+            
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+<script type="application/javascript">
+
+AOS.init();
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
+</script>
+
+
+  <script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>
+    hljs.initHighlightingOnLoad()
+  </script>
+
+
+
+
+  
+    <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+    <script>
+
+      var gitalk = new Gitalk({
+        clientID: '',
+        clientSecret: '',
+        repo: '',
+        owner: '',
+        admin: [''],
+        id: (location.pathname).substring(0, 49),      // Ensure uniqueness and length less than 50
+        distractionFreeMode: false  // Facebook-like distraction free mode
+      })
+
+      gitalk.render('gitalk-container')
+
+    </script>
+  
+
+  
+
+
+
+
+  </body>
+</html>
