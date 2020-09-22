@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>Ajax | anxy</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="https://aanxy.github.io/favicon.ico?v=1600753681213">
+<link rel="stylesheet" href="https://aanxy.github.io/styles/main.css">
+
+
+  
+    <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css" />
+  
+
+  
+
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+
+
+    <meta name="description" content="1、什么是Ajax
+1.1、ajax概念
+简单一句话，AJAX 就是用 JS 向服务端发起一个请求，并获取服务器返回的内容。就这么简单！
+1.2、在ajax之前的时代
+在Ajax之前，如何向服务器发起一个请求？
+
+地址栏。用户在地址栏输入 ..." />
+    <meta name="keywords" content="" />
+  </head>
+  <body>
+    <div id="app" class="main">
+
+      <div class="sidebar" :class="{ 'full-height': menuVisible }">
+  <div class="top-container" data-aos="fade-right">
+    <div class="top-header-container">
+      <a class="site-title-container" href="https://aanxy.github.io">
+        <img src="https://aanxy.github.io/images/avatar.png?v=1600753681213" class="site-logo">
+        <h1 class="site-title">anxy</h1>
+      </a>
+      <div class="menu-btn" @click="menuVisible = !menuVisible">
+        <div class="line"></div>
+      </div>
+    </div>
+    <div>
+      
+        
+          <a href="/" class="site-nav">
+            首页
+          </a>
+        
+      
+        
+          <a href="/archives" class="site-nav">
+            归档
+          </a>
+        
+      
+        
+          <a href="/tags" class="site-nav">
+            标签
+          </a>
+        
+      
+        
+          <a href="/post/about" class="site-nav">
+            关于
+          </a>
+        
+      
+    </div>
+  </div>
+  <div class="bottom-container" data-aos="flip-up" data-aos-offset="0">
+    <div class="social-container">
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+    <div class="site-description">
+      温故而知新
+    </div>
+    <div class="site-footer">
+      Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | <a class="rss" href="https://aanxy.github.io/atom.xml" target="_blank">RSS</a>
+    </div>
+  </div>
+</div>
+
+
+      <div class="main-container">
+        <div class="content-container" data-aos="fade-up">
+          <div class="post-detail">
+            <h2 class="post-title">Ajax</h2>
+            <div class="post-date">2020-09-21</div>
+            
+            <div class="post-content" v-pre>
+              <h2 id="1-什么是ajax">1、什么是Ajax</h2>
+<h3 id="11-ajax概念">1.1、ajax概念</h3>
+<p>简单一句话，AJAX 就是用 JS 向服务端发起一个请求，并获取服务器返回的内容。就这么简单！</p>
+<h3 id="12-在ajax之前的时代">1.2、在ajax之前的时代</h3>
+<p>在Ajax之前，如何向服务器发起一个请求？</p>
+<ul>
+<li>地址栏。用户在地址栏输入 http://baidu.com ，按回车，就向 http://baidu.com 发起了一个请求。（同时页面刷新）</li>
+<li>a 标签。用户点击页面中的 a 链接，也会发起一个请求。（同时页面刷新）</li>
+<li>img 标签。页面中如果有 img 标签，那么就会发起一个对此图片的请求（页面没有刷新，但是只能请求图片）类似的还有 link 标签、script 标签，都可以对一类文件的请求。</li>
+</ul>
+<h3 id="13-ajax可以做什么">1.3、Ajax可以做什么？</h3>
+<p>上面列举的请求发起方式，要么会导致页面刷新，要么只能请求特定类型的文件（图片、CSS 或 JS）。<br>
+ajax的发明就是为了能够让页面在任何时间、任何地点能向服务端发起一个请求获取数据，并且无需页面刷新。总结成为一下几点：</p>
+<ul>
+<li>页面加载后，从Web服务器读取数据</li>
+<li>更新网页而无需重新加载页面（这是区别于ajax之前最明显的一个特征）</li>
+<li>将数据发送到Web服务器-在后台</li>
+</ul>
+<h2 id="2-ajax工作原理">2、Ajax工作原理</h2>
+<p><img src="https://aanxy.github.io/post-images/1600677683796.png" alt="" loading="lazy"><br>
+1.网页中发生事件（页面已加载，单击按钮）<br>
+2. JavaScript创建一个XMLHttpRequest对象<br>
+3. XMLHttpRequest对象将请求发送到Web服务器<br>
+4.服务器处理请求<br>
+5.服务器将响应发送回网页<br>
+6.响应由JavaScript读取<br>
+7. JavaScript执行适当的操作（例如页面更新）</p>
+<h2 id="3-ajax发起请求步骤">3、Ajax发起请求步骤</h2>
+<p>想要用 JS 发起一个请求很简单，一共 4 步。</p>
+<ul>
+<li>创建一个对象<code>var request = new XMLHttpRequest()</code></li>
+<li>监听请求成功后的状态变化<pre><code>request.onreadystatechange = function() {
+  if (this.readyState == 4 &amp;&amp; this.status == 200) {
+      console.log(request.responseText)
+  }
+ };
+</code></pre>
+</li>
+<li>设置请求参数 <code>request.open(&quot;GET&quot;, &quot;filename&quot;, true);</code></li>
+<li>发送请求<code>request.send();</code></li>
+</ul>
+<h3 id="31-xmlhttprequest对象">3.1、XMLHttpRequest对象</h3>
+<ul>
+<li>所有现代浏览器都支持该XMLHttpRequest对象。</li>
+<li>该XMLHttpRequest对象可用于在后台与Web服务器交换数据。这意味着可以更新网页的某些部分，而无需重新加载整个页面。</li>
+<li>所有现代浏览器（Chrome，Firefox，IE7 +，Edge，Safari，Opera）都具有内置XMLHttpRequest对象.</li>
+</ul>
+<h3 id="32-向服务器发送请求">3.2、向服务器发送请求</h3>
+<p>XMLHttpRequest对象用于与服务器交换数据。将请求发送到服务器，我们使用XMLHttpRequest对象的open（）和send（）方法</p>
+<pre><code>xhttp.open(&quot;GET&quot;, &quot;ajax_info.txt&quot;, true);
+xhttp.send();
+</code></pre>
+<h4 id="321-open方法介绍">3.2.1、 open方法介绍</h4>
+<p><code>open(method,url,async)</code></p>
+<ul>
+<li>method:请求类型是get还是post</li>
+<li>url:服务器上文件的地址，该文件可以是任何类型的文件（例如.txt和.xml），也可以是服务器脚本文件（例如.asp和.php），也可以是在发送回响应之前在服务器上执行的操作（方法函数）。</li>
+<li>async: true或者false，表示是否异步请求，默认为true</li>
+</ul>
+<h4 id="322-get和post">3.2.2、get和post</h4>
+<p>GET比POST更简单，更快捷，并且可以在大多数情况下使用。但是，在以下情况下，请始终使用POST请求：<br>
+- 不能选择缓存文件（更新服务器上的文件或数据库）<br>
+- 向服务器发送大量数据（POST没有大小限制）<br>
+- 送用户输入（可以包含未知字符），POST比GET更健壮和安全。<br>
+<strong>1、get</strong><br>
+如果要使用该GET方法发送信息，请将信息添加到URL：<br>
+例如：</p>
+<pre><code>    xhttp.open(&quot;GET&quot;, &quot;demo_get2.asp?fname=Henry&amp;lname=Ford&quot;, true);//url后面跟fname参数和lname参数
+    xhttp.send();
+</code></pre>
+<p><strong>2、post</strong><br>
+要发布HTML格式的数据，请使用添加HTTP标头setRequestHeader()。在send()方法中指定要发送的数据,例如：</p>
+<pre><code>xhttp.open(&quot;POST&quot;, &quot;ajax_test.asp&quot;, true);
+xhttp.setRequestHeader(&quot;Content-type&quot;, &quot;application/x-www-form-urlencoded&quot;);
+xhttp.send(&quot;fname=Henry&amp;lname=Ford&quot;);
+</code></pre>
+<h3 id="33-onreadystatechange属性">3.3、onreadystatechange属性</h3>
+<p>使用该XMLHttpRequest对象，您可以定义一个在请求收到答案时要执行的功能。<br>
+该函数onreadystatechange在XMLHttpRequest对象的属性中定义：</p>
+<pre><code>xhttp.onreadystatechange = function() {
+  if (this.readyState == 4 &amp;&amp; this.status == 200) {
+    document.getElementById(&quot;demo&quot;).innerHTML = this.responseText;
+  }
+};
+xhttp.open(&quot;GET&quot;, &quot;ajax_info.txt&quot;, true);
+xhttp.send();
+</code></pre>
+<p>相关参数：</p>
+<ul>
+<li><code>readyState</code>:XMLHttpRequest的状态。<br>
+0：请求未初始化<br>
+1：建立服务器连接<br>
+2：收到请求<br>
+3：处理要求<br>
+4：请求已完成且响应已准备就绪</li>
+<li><code>status</code>：当前状态码<br>
+200: &quot;OK&quot;<br>
+403: &quot;Forbidden&quot;<br>
+404: &quot;Page not found&quot;</li>
+</ul>
+<p>onreadystatechange每当readyState更改时，都会调用该函数。</p>
+<p>当readyState值为4且状态为200时，响应已准备就绪</p>
+<h2 id="4-ajax实例解析">4、Ajax实例解析</h2>
+<p>使用ajax实现如下功能：<br>
+1、点击修改内容<br>
+<img src="https://aanxy.github.io/post-images/1600680289183.png" alt="" loading="lazy"><br>
+代码运行访问：<br>
+https://www.runoob.com/try/try.php?filename=tryajax_first<br>
+2、后端请求数据<br>
+https://www.w3schools.com/js/tryit.asp?filename=tryjs_ajax_display_table<br>
+HTML代码：</p>
+<pre><code>&lt;div id=&quot;myDiv&quot;&gt;&lt;h2&gt;使用 AJAX 修改该文本内容&lt;/h2&gt;&lt;/div&gt;
+&lt;button type=&quot;button&quot; onclick=&quot;loadXMLDoc()&quot;&gt;修改内容&lt;/button&gt;
+</code></pre>
+<p>onclick事件触发loadXMLDoc方法<br>
+loadXMLDoc方法如下：</p>
+<pre><code>function loadXMLDoc()
+{
+	var xmlhttp;
+	if (window.XMLHttpRequest)
+	{
+		//  IE7+, Firefox, Chrome, Opera, Safari 浏览器执行代码
+		xmlhttp=new XMLHttpRequest();
+	}
+	else
+	{
+		// IE6, IE5 浏览器执行代码
+		xmlhttp=new ActiveXObject(&quot;Microsoft.XMLHTTP&quot;);
+	}
+	xmlhttp.onreadystatechange=function()
+	{
+		if (xmlhttp.readyState==4 &amp;&amp; xmlhttp.status==200)
+		{
+			document.getElementById(&quot;myDiv&quot;).innerHTML=xmlhttp.responseText;
+		}
+	}
+	xmlhttp.open(&quot;GET&quot;,&quot;/try/ajax/ajax_info.txt&quot;,true);
+	xmlhttp.send();
+}
+</code></pre>
+<h2 id="5-jquery中的ajax功能">5、jQuery中的$.ajax()功能</h2>
+<p>jQuery <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi mathvariant="normal">.</mi><mi>a</mi><mi>j</mi><mi>a</mi><mi>x</mi><mo>(</mo><mo>)</mo><mi mathvariant="normal">函</mi><mi mathvariant="normal">数</mi><mi mathvariant="normal">用</mi><mi mathvariant="normal">于</mi><mi mathvariant="normal">执</mi><mi mathvariant="normal">行</mi><mi mathvariant="normal">异</mi><mi mathvariant="normal">步</mi><mi>H</mi><mi>T</mi><mi>T</mi><mi>P</mi><mi mathvariant="normal">请</mi><mi mathvariant="normal">求</mi><mi mathvariant="normal">。</mi><mi mathvariant="normal">它</mi><mi mathvariant="normal">是</mi><mi mathvariant="normal">很</mi><mi mathvariant="normal">久</mi><mi mathvariant="normal">以</mi><mi mathvariant="normal">前</mi><mi mathvariant="normal">添</mi><mi mathvariant="normal">加</mi><mi mathvariant="normal">到</mi><mi mathvariant="normal">库</mi><mi mathvariant="normal">中</mi><mi mathvariant="normal">的</mi><mi mathvariant="normal">，</mi><mi mathvariant="normal">自</mi><mn>1.0</mn><mi mathvariant="normal">版</mi><mi mathvariant="normal">开</mi><mi mathvariant="normal">始</mi><mi mathvariant="normal">存</mi><mi mathvariant="normal">在</mi><mi mathvariant="normal">。</mi><mi mathvariant="normal">该</mi></mrow><annotation encoding="application/x-tex">.ajax()函数用于执行异步HTTP请求。它是很久以前添加到库中的，自1.0版开始存在。该</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">.</span><span class="mord mathdefault">a</span><span class="mord mathdefault" style="margin-right:0.05724em;">j</span><span class="mord mathdefault">a</span><span class="mord mathdefault">x</span><span class="mopen">(</span><span class="mclose">)</span><span class="mord cjk_fallback">函</span><span class="mord cjk_fallback">数</span><span class="mord cjk_fallback">用</span><span class="mord cjk_fallback">于</span><span class="mord cjk_fallback">执</span><span class="mord cjk_fallback">行</span><span class="mord cjk_fallback">异</span><span class="mord cjk_fallback">步</span><span class="mord mathdefault" style="margin-right:0.08125em;">H</span><span class="mord mathdefault" style="margin-right:0.13889em;">T</span><span class="mord mathdefault" style="margin-right:0.13889em;">T</span><span class="mord mathdefault" style="margin-right:0.13889em;">P</span><span class="mord cjk_fallback">请</span><span class="mord cjk_fallback">求</span><span class="mord cjk_fallback">。</span><span class="mord cjk_fallback">它</span><span class="mord cjk_fallback">是</span><span class="mord cjk_fallback">很</span><span class="mord cjk_fallback">久</span><span class="mord cjk_fallback">以</span><span class="mord cjk_fallback">前</span><span class="mord cjk_fallback">添</span><span class="mord cjk_fallback">加</span><span class="mord cjk_fallback">到</span><span class="mord cjk_fallback">库</span><span class="mord cjk_fallback">中</span><span class="mord cjk_fallback">的</span><span class="mord cjk_fallback">，</span><span class="mord cjk_fallback">自</span><span class="mord">1</span><span class="mord">.</span><span class="mord">0</span><span class="mord cjk_fallback">版</span><span class="mord cjk_fallback">开</span><span class="mord cjk_fallback">始</span><span class="mord cjk_fallback">存</span><span class="mord cjk_fallback">在</span><span class="mord cjk_fallback">。</span><span class="mord cjk_fallback">该</span></span></span></span>.ajax()函数是前面提到的文章中讨论的每个函数使用预设配置在后台调用的功能。该功能的签名如下所示：<br>
+<code>$.ajax([settings])</code></p>
+<h3 id="setting的参数">setting的参数</h3>
+<ul>
+<li>accepts：在请求标头中发送的内容类型，它告诉服务器它将接受哪种响应。</li>
+<li>async：将此选项设置false为执行同步请求。</li>
+<li>beforeSend：请求前的回调函数，可用于jqXHR在发送对象之前对其进行修改。</li>
+<li>cache：设置此选项可false强制浏览器不缓存请求的页面。</li>
+<li>complete：当请求完成时（在after success和errorcallback执行之后）要调用的函数。</li>
+<li>contents：确定库如何解析响应的对象。</li>
+<li>contentType：发送到服务器的数据的内容类型。</li>
+<li>context：一个对象，用作this所有与Ajax相关的回调的上下文（）。</li>
+<li>converters：包含dataType到dataType转换器的对象。</li>
+<li>crossDomain：将此属性设置true为在同一域上强制跨域请求（例如JSONP）。</li>
+<li>data：执行Ajax请求时要发送到服务器的数据。</li>
+<li>dataFilter：用于处理XMLHttpRequest的原始响应数据的函数。</li>
+<li>dataType：服务器期望返回的数据类型。</li>
+<li>error：如果请求失败，将调用的函数。</li>
+<li>global：是否为此请求触发全局Ajax事件处理程序。</li>
+<li>headers：附加标头的对象发送给服务器。</li>
+<li>ifModified：将此选项设置true为仅当自上一个请求以来响应已更改时才想强制请求成功。</li>
+<li>isLocal：true如果要强制jQuery将当前环境识别为“本地”，请设置此选项。</li>
+<li>jsonp：一个字符串，用于覆盖JSONP请求中的回调函数名称。</li>
+<li>jsonpCallback：指定JSONP请求的回调函数名称。</li>
+<li>mimeType：一个字符串，用于指定要覆盖XHR MIME类型的MIME类型。</li>
+<li>password：XMLHttpRequest用来响应HTTP访问认证请求的密码。</li>
+<li>processData：false如果您不希望传递到该data选项的数据（如果还没有字符串）被处理并转换为查询字符串，则将该选项设置为。</li>
+<li>scriptAttrs：定义一个具有附加属性的对象，以在“脚本”或“ jsonp”请求中使用。</li>
+<li>scriptCharset：在请求中使用的脚本标签上设置charset属性，但仅在使用“脚本”传输时才适用。</li>
+<li>statusCode：数字HTTP代码和响应中具有相应代码的函数的对象。</li>
+<li>success：如果请求成功，将调用的函数。</li>
+<li>timeout：一个数字，用于指定请求的超时时间（以毫秒为单位）。</li>
+<li>traditional：true如果您希望使用传统风格的参数序列化，请将其设置为。</li>
+<li>type：发出的请求类型，可以是“ POST”或“ GET”。</li>
+<li>url：包含请求发送到的URL的字符串。</li>
+<li>username：XMLHttpRequest用来响应HTTP访问认证请求的用户名。</li>
+<li>xhr：用于创建XMLHttpRequest对象的回调。</li>
+<li>xhrFields：要在本机XHR对象上设置的对象。</li>
+</ul>
+<h3 id="实例用法">实例用法</h3>
+<pre><code>$.ajax({
+  url: 'http://api.joind.in/v2.1/talks/10889',//访问地址
+  data: {//传递参数
+    format: 'json'
+  },
+  error: function() {//请求失败处理
+    $('#info').html('&lt;p&gt;An error has occurred&lt;/p&gt;');
+  },
+  dataType: 'jsonp',//参数类型
+  success: function(data) {//请求成功处理
+    console.log(data)
+  },
+  type: 'GET'//请求方式
+});
+</code></pre>
+
+            </div>
+            
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://aanxy.github.io/_UOLc5H2f/">
+                  <h3 class="post-title">
+                    mobx学习——@inject
+                  </h3>
+                </a>
+              </div>
+            
+
+            
+              
+                <div id="gitalk-container" data-aos="fade-in"></div>
+              
+
+              
+            
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+<script type="application/javascript">
+
+AOS.init();
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
+</script>
+
+
+  <script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>
+    hljs.initHighlightingOnLoad()
+  </script>
+
+
+
+
+  
+    <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+    <script>
+
+      var gitalk = new Gitalk({
+        clientID: '',
+        clientSecret: '',
+        repo: '',
+        owner: '',
+        admin: [''],
+        id: (location.pathname).substring(0, 49),      // Ensure uniqueness and length less than 50
+        distractionFreeMode: false  // Facebook-like distraction free mode
+      })
+
+      gitalk.render('gitalk-container')
+
+    </script>
+  
+
+  
+
+
+
+
+  </body>
+</html>

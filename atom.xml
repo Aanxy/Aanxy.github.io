@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://aanxy.github.io</id>
     <title>anxy</title>
-    <updated>2020-09-21T09:16:58.893Z</updated>
+    <updated>2020-09-22T05:48:04.963Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://aanxy.github.io"/>
     <link rel="self" href="https://aanxy.github.io/atom.xml"/>
@@ -10,6 +10,13 @@
     <logo>https://aanxy.github.io/images/avatar.png</logo>
     <icon>https://aanxy.github.io/favicon.ico</icon>
     <rights>All rights reserved 2020, anxy</rights>
+    <entry>
+        <title type="html"><![CDATA[Ajax]]></title>
+        <id>https://aanxy.github.io/Cf8UAVAkG/</id>
+        <link href="https://aanxy.github.io/Cf8UAVAkG/">
+        </link>
+        <updated>2020-09-21T08:32:44.000Z</updated>
+    </entry>
     <entry>
         <title type="html"><![CDATA[mobx学习——@inject]]></title>
         <id>https://aanxy.github.io/_UOLc5H2f/</id>
@@ -41,12 +48,5 @@
 ]]></summary>
         <content type="html"><![CDATA[<p>本章主要讲解mobx中observer和obervable</p>
 ]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[学习thinking]]></title>
-        <id>https://aanxy.github.io/xue-xi-thinking/</id>
-        <link href="https://aanxy.github.io/xue-xi-thinking/">
-        </link>
-        <updated>2020-09-17T03:22:18.000Z</updated>
     </entry>
 </feed>
