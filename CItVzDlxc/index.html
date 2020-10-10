@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>简历相关 | anxy</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="https://aanxy.github.io/favicon.ico?v=1602309204373">
+<link rel="stylesheet" href="https://aanxy.github.io/styles/main.css">
+
+
+  
+    <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css" />
+  
+
+  
+
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+
+
+    <meta name="description" content="前端简历：
+1、技能包装
+2、项目包装
+卡多帮关于移动端的
+PC端：关于广告后台
+移动端：微信小程序或者是公众号（二选一，小程序和vue特别像，能快速上手）
+主要介绍：项目是干什么的，以及用到了了什么技术，以及个人工作，
+vue+webpa..." />
+    <meta name="keywords" content="" />
+  </head>
+  <body>
+    <div id="app" class="main">
+
+      <div class="sidebar" :class="{ 'full-height': menuVisible }">
+  <div class="top-container" data-aos="fade-right">
+    <div class="top-header-container">
+      <a class="site-title-container" href="https://aanxy.github.io">
+        <img src="https://aanxy.github.io/images/avatar.png?v=1602309204373" class="site-logo">
+        <h1 class="site-title">anxy</h1>
+      </a>
+      <div class="menu-btn" @click="menuVisible = !menuVisible">
+        <div class="line"></div>
+      </div>
+    </div>
+    <div>
+      
+        
+          <a href="/" class="site-nav">
+            首页
+          </a>
+        
+      
+        
+          <a href="/archives" class="site-nav">
+            归档
+          </a>
+        
+      
+        
+          <a href="/tags" class="site-nav">
+            标签
+          </a>
+        
+      
+        
+          <a href="/post/about" class="site-nav">
+            关于
+          </a>
+        
+      
+    </div>
+  </div>
+  <div class="bottom-container" data-aos="flip-up" data-aos-offset="0">
+    <div class="social-container">
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+    <div class="site-description">
+      温故而知新
+    </div>
+    <div class="site-footer">
+      Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | <a class="rss" href="https://aanxy.github.io/atom.xml" target="_blank">RSS</a>
+    </div>
+  </div>
+</div>
+
+
+      <div class="main-container">
+        <div class="content-container" data-aos="fade-up">
+          <div class="post-detail">
+            <h2 class="post-title">简历相关</h2>
+            <div class="post-date">2020-09-29</div>
+            
+            <div class="post-content" v-pre>
+              <p>前端简历：<br>
+1、技能包装<br>
+2、项目包装<br>
+卡多帮关于移动端的<br>
+PC端：关于广告后台<br>
+移动端：微信小程序或者是公众号（二选一，小程序和vue特别像，能快速上手）<br>
+主要介绍：项目是干什么的，以及用到了了什么技术，以及个人工作，<br>
+vue+webpack+ajax<br>
+前面的经验很重要应该如实讲：做设计后转行表明自己发现前端的实现与设计之间的大多数人未能发现的问题，以此来做一个更好的前端。<br>
+产品经理的问题：合理指定产品功能以及项目周期安排，表明领导力和产品力<br>
+相关职责：<br>
+1、参与相关产品的讨论以及原型图的设计（使用工具、技术）<br>
+2、根据原型图进行页面实现，所用技术：vue，ajax（vue作为框架，ajax用于前后端数据交互、）<br>
+3、通过ajax请求，配合后端完成页面数据交互、渲染页面（使用缓存技术，进行页面优化得讲）<br>
+4、处理浏览器兼容性（兼容不同浏览器，适应不同分辨率大小、自适应）<br>
+5、处理图片加载速度、以及项目后期的优化的问题，ajax优化请求（将图片格式转换成webp格式、图片采用，将图片放在单独服务器上，小图标用svg或者iconfont进行代替，懒加载和预加载，其中懒加载提前了解图片到视口顶端得距离，该距离内得所有图片进行加载）<br>
+jquery中得lazyload()方法可以参考<br>
+iconfont图片，通过将图片上传到阿里巴巴矢量图中，然后通过font形式引入<br>
+webp格式的图片的优点：体积小，失真率低，再肉眼范围内一般不会轻易发现图片失真</p>
+<pre><code>$(&quot;img.lazy&quot;).lazyload({
+  placeholder : &quot;img/grey.gif&quot;, //用图片提前占位
+    // placeholder,值为某一图片路径.此图片用来占据将要加载的图片的位置,待图片加载时,占位图则会隐藏
+  effect: &quot;fadeIn&quot;, // 载入使用何种效果
+    // effect(特效),值有show(直接显示),fadeIn(淡入),slideDown(下拉)等,常用fadeIn
+  threshold: 200, // 提前开始加载
+    // threshold,值为数字,代表页面高度.如设置为200,表示滚动条在离目标位置还有200的高度时就开始加载图片,可以做到不让用户察觉
+  event: 'click',  // 事件触发时才加载
+    // event,值有click(点击),mouseover(鼠标划过),sporty(运动的),foobar(…).可以实现鼠标莫过或点击图片才开始加载,后两个值未测试…
+  container: $(&quot;#container&quot;),  // 对某容器中的图片实现效果
+    // container,值为某容器.lazyload默认在拉动浏览器滚动条时生效,这个参数可以让你在拉动某DIV的滚动条时依次加载其中的图片
+  failurelimit : 10 // 图片排序混乱时
+     // failurelimit,值为数字.lazyload默认在找到第一张不在可见区域里的图片时则不再继续加载,但当HTML容器混乱的时候可能出现可见区域内图片并没加载出来的情况,failurelimit意在加载N张可见区域外的图片,以避免出现这个问题.
+});
+</code></pre>
+<p>2、手机端小程序（卡多帮--目前仍在开发中）<br>
+https://www.cnblogs.com/teahouse/p/11504361.html<br>
+主要工作：<br>
+1、页面实现(wxml+wcss)<br>
+2、前后端数据交互<br>
+3、相关api指定，公共路由编写<br>
+4、公共组件开发，例如一些屏幕中的公共部分<br>
+5、小的数据浏览页的实现，主要说下滑分页的实现<br>
+重点：首屏加载速度，从一下两方面进行相关回答<br>
+1、代码体积<br>
+2、加载速度<br>
+小程序代码体积的分包以及压缩<br>
+将小程序划分成不同的子包，在构建时打包成不同的分包，用户在使用时按需进行加载。<br>
+分包概念：首先小程序必定有一个主要（也就是包含启动页或者tabBar的包）为main包，其他包根据需求进行划分，在页面加载时，主要会首先进行加载，进入主页面后，如果用户点击进入其他页面则加载相应的其他分包，然后进行展示。<br>
+目前小程序对于包的限制：</p>
+<ul>
+<li>整个小程序所有分包大小不超过 16M</li>
+<li>单个分包/主包大小不能超过 2M<br>
+使用步骤：<br>
+1、创建分包<br>
+<img src="https://aanxy.github.io/post-images/1601364910860.png" alt="" loading="lazy"><br>
+2、在app.json中生命分包，记住字段名：subpackages</li>
+</ul>
+<pre><code>{
+  &quot;pages&quot;:[
+    &quot;pages/index&quot;,
+    &quot;pages/logs&quot;
+  ],
+  &quot;subpackages&quot;: [
+    {
+      &quot;root&quot;: &quot;packageA&quot;,
+      &quot;pages&quot;: [
+        &quot;pages/cat&quot;,
+        &quot;pages/dog&quot;
+      ]
+    }, {
+      &quot;root&quot;: &quot;packageB&quot;,
+      &quot;name&quot;: &quot;pack2&quot;,
+      &quot;pages&quot;: [
+        &quot;pages/apple&quot;,
+        &quot;pages/banana&quot;
+      ]
+    }
+  ]
+}
+</code></pre>
+<p>subpackages中，每个分包的配置项<br>
+<img src="https://aanxy.github.io/post-images/1601365091373.png" alt="" loading="lazy"></p>
+<p>有一点需要注意，不同子包之间不能相互引入，但是子包可以引入主包<br>
+<img src="https://aanxy.github.io/post-images/1601365206490.png" alt="" loading="lazy"><br>
+相关源码：<br>
+https://res.wx.qq.com/wxdoc/dist/assets/media/demo-subpackages.b42a3adb.zip&quot;<br>
+使用小程序提供的 rpx 单位，在尺寸差别不大的情况下对页面布局进行等比缩放。</p>
+<p>2、首页优化</p>
+<blockquote>
+<p>城市生活服务小程序，为无锡百姓提供便利、高效、实惠的城市生活服务。使用微信开放文档小程序相关技<br>
+术WXML、WXSS以及相关微信api以及小程序框架WeUI。在项目中负责部分微信小程序页面功能开发，<br>
+解决小程序端兼容性问题（ios与安卓上的兼容性），小程序性能优化（启动速度、首屏加载速度），小程<br>
+序公共组件开发（投票、抽奖、问卷）。文件上传模块开发，解决项目难点：在开发“爱吾锡”小程序时由<br>
+于小程序功能复杂，文件过大，因此在手机端初次加载小程序时白屏时间远远超过用户可接受的时间范围，<br>
+体验感极差，解决方案如下：1、实现游客机制，取消首次强制用户注册登录，2、减小包体积，代码资源分<br>
+包、实现分包加载，本地图片转为线上资源地址，3、实现预渲染，先给用户呈现本地渲染好的页面，然后<br>
+等接口返回数据再进行页面渲染，通过以上方法从资源大小和加载速度两方面提升了小程序性能，使得小程<br>
+序首屏加载速度提高了30%。</p>
+</blockquote>
+<p>主要技能：HTML,HTML5,CSS3动画，JavaScript，jQuery，bootstrap，vue，webpack，git，node部分、mock.js</p>
+
+            </div>
+            
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://aanxy.github.io/Cf8UAVAkG/">
+                  <h3 class="post-title">
+                    Ajax
+                  </h3>
+                </a>
+              </div>
+            
+
+            
+              
+                <div id="gitalk-container" data-aos="fade-in"></div>
+              
+
+              
+            
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+<script type="application/javascript">
+
+AOS.init();
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
+</script>
+
+
+  <script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>
+    hljs.initHighlightingOnLoad()
+  </script>
+
+
+
+
+  
+    <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+    <script>
+
+      var gitalk = new Gitalk({
+        clientID: '',
+        clientSecret: '',
+        repo: '',
+        owner: '',
+        admin: [''],
+        id: (location.pathname).substring(0, 49),      // Ensure uniqueness and length less than 50
+        distractionFreeMode: false  // Facebook-like distraction free mode
+      })
+
+      gitalk.render('gitalk-container')
+
+    </script>
+  
+
+  
+
+
+
+
+  </body>
+</html>
