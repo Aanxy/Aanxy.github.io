@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>https://juejin.im/post/6860822387622707213 | anxy</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="https://aanxy.github.io/favicon.ico?v=1605160269512">
+<link rel="stylesheet" href="https://aanxy.github.io/styles/main.css">
+
+
+  
+    <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css" />
+  
+
+  
+
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+
+
+    <meta name="description" content="回调函数，作用域，作用域链、闭包函数，原型函数，原型链、继承、this、异步、事件模型和事件流、ajax与跨域、存储
+
+作用域
+1、 什么是作用域
+作用域可以理解为对变量（包括函数、对象）的生命周期和可访问性，指定的一套规则。
+var gl..." />
+    <meta name="keywords" content="" />
+  </head>
+  <body>
+    <div id="app" class="main">
+
+      <div class="sidebar" :class="{ 'full-height': menuVisible }">
+  <div class="top-container" data-aos="fade-right">
+    <div class="top-header-container">
+      <a class="site-title-container" href="https://aanxy.github.io">
+        <img src="https://aanxy.github.io/images/avatar.png?v=1605160269512" class="site-logo">
+        <h1 class="site-title">anxy</h1>
+      </a>
+      <div class="menu-btn" @click="menuVisible = !menuVisible">
+        <div class="line"></div>
+      </div>
+    </div>
+    <div>
+      
+        
+          <a href="/" class="site-nav">
+            首页
+          </a>
+        
+      
+        
+          <a href="/archives" class="site-nav">
+            归档
+          </a>
+        
+      
+        
+          <a href="/tags" class="site-nav">
+            标签
+          </a>
+        
+      
+        
+          <a href="/post/about" class="site-nav">
+            关于
+          </a>
+        
+      
+    </div>
+  </div>
+  <div class="bottom-container" data-aos="flip-up" data-aos-offset="0">
+    <div class="social-container">
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+    <div class="site-description">
+      温故而知新
+    </div>
+    <div class="site-footer">
+      Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | <a class="rss" href="https://aanxy.github.io/atom.xml" target="_blank">RSS</a>
+    </div>
+  </div>
+</div>
+
+
+      <div class="main-container">
+        <div class="content-container" data-aos="fade-up">
+          <div class="post-detail">
+            <h2 class="post-title">https://juejin.im/post/6860822387622707213</h2>
+            <div class="post-date">2020-10-26</div>
+            
+            <div class="post-content" v-pre>
+              <p>回调函数，作用域，作用域链、闭包函数，原型函数，原型链、继承、this、异步、事件模型和事件流、ajax与跨域、存储<br>
+<img src="https://aanxy.github.io/post-images/1603695605768.png" alt="" loading="lazy"></p>
+<h2 id="作用域">作用域</h2>
+<p>1、 什么是作用域<br>
+作用域可以理解为对变量（包括函数、对象）的生命周期和可访问性，指定的一套规则。</p>
+<pre><code>var gloalvar = '全局变量'
+function foo(){
+    var localvar = '局部变量'
+}
+foo();
+console.log(gloalvar);//全局变量
+console.log(localvar);//Uncaught ReferenceError: localvar is not defined(localvar未定义)
+</code></pre>
+<p>从上例子可知，localvar是在函数作用域内定义，在foo()执行完后，这个变量就被销毁，在全局作用域内是访问不到的。（此处注意：在函数内部定义的所有变量，当函数执行完之后，js的垃圾回收机制会收回所有的变量）<br>
+2、全局作用域<br>
+直接在script标签内的js代码，都是全局作用域，有一下集中情况可以用友全局作用域：</p>
+<ul>
+<li>最外层函数和在最外层函数外面定义的变量拥有全局作用域</li>
+<li>在函数或代码块{}内未定义的变量也拥有全局作用域<pre><code> function foo() {
+    variable = &quot;我仍然是全局变量&quot;;
+    var localVar = '局部变量'
+        }
+        foo() // 要先执行这个函数
+        console.log(variable); // 我仍然是全局变量
+        console.log(localVar) // Uncaught ReferenceError: localVar is not defined
+</code></pre>
+</li>
+</ul>
+<p>3、函数作用域<br>
+在函数内部定义的变量，拥有局部作用域。调用函数时创建函数作用域，函数执行完毕，作用域销毁。在局部作用域内是封闭的，从外层作用域内无法访问函数内部的作用域。<br>
+4、块级作用域<br>
+ES6之后，使用let和const自变量，可以产生块状作用域，在块状作用域之外的地方是访问不了变量的一波</p>
+<pre><code>if(true) {
+    let blockVar = &quot;块状作用域&quot;
+    var variable = &quot;HopeSun&quot;
+}
+
+console.log(variable)  // HopeSun
+console.log(blockVar)  // Uncaught ReferenceError: blockVar is not defined
+</code></pre>
+<h2 id="作用域链">作用域链</h2>
+<p>1、自由变量</p>
+<pre><code>var a = 100
+function foo() {
+    var b = 200
+    console.log(a) // a 是自由变量
+    console.log(b)
+}
+
+foo()
+</code></pre>
+<p>在上边代码中，当访问a 变量时，在当前作用域内并没有定义（对比变量 b）。当前作用域没有定义的变量，这称为 自由变量。自由变量的值如何得到，向父级作用域寻找（不严谨）<br>
+2、什么是作用域链<br>
+对于自由变量，当获取值时，会向父级作用域寻找，若父级作用域也没有，就会一层一层向上寻找，知道找到全局作用域，若无，就放弃。这用一层一层的关系，就是<strong>作用域链</strong>。</p>
+<pre><code>var a = 100
+function foo() {
+    var b = 200
+    function bar(){
+        console.log(a) // 自由变量
+    }
+    bar()
+}
+
+foo()
+</code></pre>
+<p>如上代码，当要获取a值时，寻找顺序：bar-&gt;foo-&gt;全局作用域<br>
+3、自由变量的取值<br>
+关于自由变量的值，上文提到要到父作用域中取，其实有时候这种解释会产生歧义。</p>
+<pre><code>var x = 10
+function foo() {
+    console.log(x)
+}
+
+function show(fun) {
+    var x = 20; 
+    (function(){
+        fun(); // 10
+    })()
+}
+
+show(foo);
+</code></pre>
+<p>在foo函数中，取自由变量x的值时，要到哪个作用域中取？——要到创建foo函数的那个作用域中取，无论foo函数将在哪里调用。</p>
+<p>因此，在自由变量获取值时，要到创建这个函数的作用域中取值,这里强调的是“创建”，而不是“调用”</p>
+
+            </div>
+            
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://aanxy.github.io/CItVzDlxc/">
+                  <h3 class="post-title">
+                    简历相关
+                  </h3>
+                </a>
+              </div>
+            
+
+            
+              
+                <div id="gitalk-container" data-aos="fade-in"></div>
+              
+
+              
+            
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+<script type="application/javascript">
+
+AOS.init();
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
+</script>
+
+
+  <script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>
+    hljs.initHighlightingOnLoad()
+  </script>
+
+
+
+
+  
+    <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+    <script>
+
+      var gitalk = new Gitalk({
+        clientID: '',
+        clientSecret: '',
+        repo: '',
+        owner: '',
+        admin: [''],
+        id: (location.pathname).substring(0, 49),      // Ensure uniqueness and length less than 50
+        distractionFreeMode: false  // Facebook-like distraction free mode
+      })
+
+      gitalk.render('gitalk-container')
+
+    </script>
+  
+
+  
+
+
+
+
+  </body>
+</html>

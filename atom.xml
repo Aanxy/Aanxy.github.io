@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://aanxy.github.io</id>
     <title>anxy</title>
-    <updated>2020-10-10T05:53:46.625Z</updated>
+    <updated>2020-11-12T05:51:28.152Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://aanxy.github.io"/>
     <link rel="self" href="https://aanxy.github.io/atom.xml"/>
@@ -10,6 +10,20 @@
     <logo>https://aanxy.github.io/images/avatar.png</logo>
     <icon>https://aanxy.github.io/favicon.ico</icon>
     <rights>All rights reserved 2020, anxy</rights>
+    <entry>
+        <title type="html"><![CDATA[js必掌握内容]]></title>
+        <id>https://aanxy.github.io/ItznSemAw/</id>
+        <link href="https://aanxy.github.io/ItznSemAw/">
+        </link>
+        <updated>2020-11-09T01:56:41.000Z</updated>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[https://juejin.im/post/6860822387622707213]]></title>
+        <id>https://aanxy.github.io/F1gpIr2st/</id>
+        <link href="https://aanxy.github.io/F1gpIr2st/">
+        </link>
+        <updated>2020-10-26T05:56:53.000Z</updated>
+    </entry>
     <entry>
         <title type="html"><![CDATA[简历相关]]></title>
         <id>https://aanxy.github.io/CItVzDlxc/</id>
@@ -30,19 +44,5 @@
         <link href="https://aanxy.github.io/_UOLc5H2f/">
         </link>
         <updated>2020-09-21T07:42:30.000Z</updated>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[mobx学习——autorun]]></title>
-        <id>https://aanxy.github.io/2XQTlPDiq/</id>
-        <link href="https://aanxy.github.io/2XQTlPDiq/">
-        </link>
-        <updated>2020-09-21T03:06:55.000Z</updated>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[mobx学习——computed]]></title>
-        <id>https://aanxy.github.io/ZVZ_DpwsF/</id>
-        <link href="https://aanxy.github.io/ZVZ_DpwsF/">
-        </link>
-        <updated>2020-09-21T02:07:41.000Z</updated>
     </entry>
 </feed>
