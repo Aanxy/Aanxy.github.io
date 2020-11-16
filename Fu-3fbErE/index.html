@@ -8,7 +8,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
-<link rel="shortcut icon" href="https://aanxy.github.io/favicon.ico?v=1605507436304">
+<link rel="shortcut icon" href="https://aanxy.github.io/favicon.ico?v=1605508800338">
 <link rel="stylesheet" href="https://aanxy.github.io/styles/main.css">
 
 
@@ -36,7 +36,7 @@
   <div class="top-container" data-aos="fade-right">
     <div class="top-header-container">
       <a class="site-title-container" href="https://aanxy.github.io">
-        <img src="https://aanxy.github.io/images/avatar.png?v=1605507436304" class="site-logo">
+        <img src="https://aanxy.github.io/images/avatar.png?v=1605508800338" class="site-logo">
         <h1 class="site-title">anxy</h1>
       </a>
       <div class="menu-btn" @click="menuVisible = !menuVisible">
@@ -191,6 +191,10 @@
 <p>运行结果：点击每个li会分别弹出对应的数字<br>
 <img src="https://aanxy.github.io/post-images/1605507307179.png" alt="" loading="lazy"></p>
 <p>以上就是闭包的一个典型的应用：给list列表里的每个li分别设置点击事件，非常方便！</p>
+<p>扩展：闭包的缺陷<br>
+1、比普通函数更占内存，会导致网络性能变差<br>
+2、内存泄露，每个浏览器都会有自己的垃圾回收机制，当分配出去的内存不使用的时候便会回收，内存泄漏就是代码中分配了一些顽固的内存，浏览器无法回收，如果这些顽固的内存还在一直不停的分配则就会导致内存不足，造成泄露<br>
+3、闭包造成的内存泄漏，因为闭包就是能够访问外部函数变量的一个函数，而函数是必须保存在内存中的对象，所以位于函数执行上下文中的所有变量也需要保存在内存中，这样就不会被回收，如果一旦循环引用或创建闭包，就会占据大量内存，可能会引起内存泄漏</p>
 
             </div>
             
