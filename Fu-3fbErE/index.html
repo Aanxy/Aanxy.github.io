@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" >
 
-<title>mobx学习——@inject | anxy</title>
+<title>闭包 | anxy</title>
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
@@ -24,9 +24,9 @@
 
 
 
-    <meta name="description" content="当使用mobx配合react时，对于store的注入，都是inject配合装饰器的方法来使用，Provider是高阶组件，inject函数等于高阶组件，看如下代码
-...
-import { inject, observer } from '..." />
+    <meta name="description" content="首先充分理解闭包的含义，并且请记住这句话：
+由于在Javascript语言中，只有函数内部的子函数才能读取局部变量，闭包就是能够读取其他函数内部变量的函数。所以，在本质上，闭包就是将函数内部和函数外部连接起来的一座桥梁。
+首先请看一个实例:..." />
     <meta name="keywords" content="" />
   </head>
   <body>
@@ -98,46 +98,108 @@ import { inject, observer } from '..." />
       <div class="main-container">
         <div class="content-container" data-aos="fade-up">
           <div class="post-detail">
-            <h2 class="post-title">mobx学习——@inject</h2>
-            <div class="post-date">2020-09-21</div>
+            <h2 class="post-title">闭包</h2>
+            <div class="post-date">2020-11-16</div>
             
             <div class="post-content" v-pre>
-              <p>当使用mobx配合react时，对于store的注入，都是inject配合装饰器的方法来使用，Provider是高阶组件，inject函数等于高阶组件，看如下代码</p>
-<pre><code>...
-import { inject, observer } from 'mobx-react'
-
-@inject('myStore') @observer
-class MyComp extends Component {
-    componentDidMount() {
-        console.log(this.props.myStore)
-    }
-    render() {
-        return (
-            &lt;div&gt;
-                MyComp
-            &lt;/div&gt;
-        )
-    }
-}
+              <p>首先充分理解闭包的含义，并且请记住这句话：<br>
+<strong>由于在Javascript语言中，只有函数内部的子函数才能读取局部变量，闭包就是能够读取其他函数内部变量的函数。所以，在本质上，闭包就是将函数内部和函数外部连接起来的一座桥梁。</strong></p>
+<p>首先请看一个实例:给每一个li设置点击事件，并且点击当前li输出当前li里面的值</p>
+<pre><code>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+	&lt;title&gt;闭包学习&lt;/title&gt;
+	&lt;style type=&quot;text/css&quot;&gt;
+		ul&gt;li{
+			list-style: none;
+			width: 100px;
+			height: 100px;
+			border: 1px solid #ccc;
+			display: inline-block;
+			text-align: center;
+			line-height: 100px;
+			vertical-align: middle;
+		}
+	&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+	&lt;ul&gt;
+		&lt;li&gt;0&lt;/li&gt;
+		&lt;li&gt;1&lt;/li&gt;
+		&lt;li&gt;2&lt;/li&gt;
+		&lt;li&gt;3&lt;/li&gt;
+		&lt;li&gt;4&lt;/li&gt;
+	&lt;/ul&gt;
+	&lt;script type=&quot;text/javascript&quot;&gt;
+		var list = document.getElementsByTagName('li');
+		console.log(list);
+		// 给每个li设置点击事件，依次弹出1，2，3，4，5
+		for (var i = 0; i &lt; list.length; i++) {
+			list[i].onclick = function(){
+				window.alert(i);
+			}
+		}
+		console.log(i)
+	&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
 </code></pre>
-<ul>
-<li>当Provider注入了mobxStore到组件之后，实际上mobxStore是挂载到this.context中的</li>
-<li>inject的作用就是把参数作为key值从mobxStore里取出，this.context.mobxStores[key]</li>
-<li>取出之后把组件和取出的值重新生成新的组件(高阶组件)</li>
-<li>inject先执行返回一个函数，装饰器再把组件作为参数传给这个返回的函数</li>
-<li>可以传入多个store</li>
-<li>inject等于高阶组件，返回函数，函数的执行返回Injector组件，props的获取从this.context.mobxStores拿到<br>
-参考：https://jsprogram.cn/blog/mobx-react-inject/</li>
-</ul>
+<p>运行发现：无论点击哪一个li都会弹出5<br>
+<img src="https://aanxy.github.io/post-images/1605507010838.png" alt="" loading="lazy"><br>
+解释该原因：因为js没有块级作用域，所以for循环里的i就是当前全局作用域里的 i，因此在onclick函数里访问到的i为全局变量 i ,也就是for循环结束时的 i ,所以每次输出5<br>
+解决方式：闭包===》(再回头去看第一句话)</p>
+<pre><code>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+	&lt;title&gt;闭包学习&lt;/title&gt;
+	&lt;style type=&quot;text/css&quot;&gt;
+		ul&gt;li{
+			list-style: none;
+			width: 100px;
+			height: 100px;
+			border: 1px solid #ccc;
+			display: inline-block;
+			text-align: center;
+			line-height: 100px;
+			vertical-align: middle;
+		}
+	&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+	&lt;ul&gt;
+		&lt;li&gt;0&lt;/li&gt;
+		&lt;li&gt;1&lt;/li&gt;
+		&lt;li&gt;2&lt;/li&gt;
+		&lt;li&gt;3&lt;/li&gt;
+		&lt;li&gt;4&lt;/li&gt;
+	&lt;/ul&gt;
+	&lt;script type=&quot;text/javascript&quot;&gt;
+		var list = document.getElementsByTagName('li');
+		console.log(list);
+		// 给每个li设置点击事件，依次弹出1，2，3，4，5
+		for ( var i = 0;i &lt; list.length; i++){
+            list[i].onclick = function(i){
+            	return function(){
+            		window.alert(i)//此处i去访问onclick传递进来的i
+            	}
+            }(i)
+		}
+	&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+<p>运行结果：点击每个li会分别弹出对应的数字<br>
+<img src="https://aanxy.github.io/post-images/1605507307179.png" alt="" loading="lazy"></p>
+<p>以上就是闭包的一个典型的应用：给list列表里的每个li分别设置点击事件，非常方便！</p>
 
             </div>
             
             
               <div class="next-post">
                 <div class="next">下一篇</div>
-                <a href="https://aanxy.github.io/2XQTlPDiq/">
+                <a href="https://aanxy.github.io/wS_FQ-vXn/">
                   <h3 class="post-title">
-                    mobx学习——autorun
+                    es6必掌握内容
                   </h3>
                 </a>
               </div>
