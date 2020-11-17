@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>js中的this | anxy</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="https://aanxy.github.io/favicon.ico?v=1605597969521">
+<link rel="stylesheet" href="https://aanxy.github.io/styles/main.css">
+
+
+  
+    <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css" />
+  
+
+  
+
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+
+
+    <meta name="description" content="一、执行上下文
+执行该行的环境（或范围）称为执行上下文。JavaScript运行时维护这些执行上下文的堆栈，而位于该堆栈顶部的执行上下文是当前正在执行的上下文。this每次更改执行上下文时，对象都引用更改。
+二、this指向
+1、this指..." />
+    <meta name="keywords" content="" />
+  </head>
+  <body>
+    <div id="app" class="main">
+
+      <div class="sidebar" :class="{ 'full-height': menuVisible }">
+  <div class="top-container" data-aos="fade-right">
+    <div class="top-header-container">
+      <a class="site-title-container" href="https://aanxy.github.io">
+        <img src="https://aanxy.github.io/images/avatar.png?v=1605597969521" class="site-logo">
+        <h1 class="site-title">anxy</h1>
+      </a>
+      <div class="menu-btn" @click="menuVisible = !menuVisible">
+        <div class="line"></div>
+      </div>
+    </div>
+    <div>
+      
+        
+          <a href="/" class="site-nav">
+            首页
+          </a>
+        
+      
+        
+          <a href="/archives" class="site-nav">
+            归档
+          </a>
+        
+      
+        
+          <a href="/tags" class="site-nav">
+            标签
+          </a>
+        
+      
+        
+          <a href="/post/about" class="site-nav">
+            关于
+          </a>
+        
+      
+    </div>
+  </div>
+  <div class="bottom-container" data-aos="flip-up" data-aos-offset="0">
+    <div class="social-container">
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+    <div class="site-description">
+      温故而知新
+    </div>
+    <div class="site-footer">
+      Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | <a class="rss" href="https://aanxy.github.io/atom.xml" target="_blank">RSS</a>
+    </div>
+  </div>
+</div>
+
+
+      <div class="main-container">
+        <div class="content-container" data-aos="fade-up">
+          <div class="post-detail">
+            <h2 class="post-title">js中的this</h2>
+            <div class="post-date">2020-11-17</div>
+            
+            <div class="post-content" v-pre>
+              <h2 id="一-执行上下文">一、执行上下文</h2>
+<p>执行该行的环境（或范围）称为执行上下文。JavaScript运行时维护这些执行上下文的堆栈，而位于该堆栈顶部的执行上下文是当前正在执行的上下文。this每次更改执行上下文时，对象都引用更改。</p>
+<h2 id="二-this指向">二、this指向</h2>
+<h3 id="1-this指向全局对象">1、this指向全局对象</h3>
+<p>默认情况下，执行的执行上下文是全局的-这意味着如果代码是作为简单函数调用的一部分执行的，则this引用全局对象。<br>
+对于window浏览器，该对象是全局对象。在NodeJS环境中的特殊对象global的值是this。</p>
+<pre><code>function foo () {
+	console.log(this === window); 
+}
+
+foo();	//输出true
+console.log(this === window) //输出true
+</code></pre>
+<p>如果对任何功能启用了严格模式，则的值this将标记undefined为在严格模式下。全局对象是指undefined代替windows对象的对象。</p>
+<pre><code>function foo () {
+    'use strict';
+	console.log(this === window); 
+}
+
+foo();	//输出false  因为在严格模式下，this全局执行上下文中的值为undefined。
+</code></pre>
+<h3 id="2-this指向new的新实例">2、this指向new的新实例</h3>
+<p>当使用new关键字调用函数时，该函数称为构造函数，并返回一个新实例。在这种情况下，this引用指向新创建的实例。</p>
+<pre><code>function Person(fn, ln) {
+	this.first_name = fn;
+	this.last_name = ln;
+
+	this.displayName = function() {
+		console.log(`Name: ${this.first_name} ${this.last_name}`);
+	}
+}
+
+let person = new Person(&quot;安&quot;, &quot;小艳&quot;);
+person.displayName();  // 输出 Name: 安 小艳
+let person2 = new Person(&quot;董&quot;, &quot;磊超&quot;);
+person2.displayName();  // 输出 Name: 董 磊超
+</code></pre>
+<h3 id="3-this指向调用者对象-父对象">3、this指向调用者对象 （父对象）</h3>
+<p>在JavaScript中，对象的属性可以是方法或普通的值。当调用对象的方法时，则this引用指向正在调用该方法的对象。</p>
+<pre><code>function foo () {
+	'use strict';
+	console.log(this === window); 
+}
+
+let user = {
+	count: 10,
+	foo: foo,
+	foo1: function() {
+		console.log(this === window);
+	}
+}
+
+user.foo()  // 输出false “this“现在指向user对象
+let fun1 = user.foo1;
+fun1() // 输出true  因为此方法直接被调用，也就是被window对象调用，所以this指向全局
+user.foo1()  // 输出false，因为foo1方法的调用者为user，因此this指向user对象
+</code></pre>
+<p>由上可看，this取绝与如何调用该方法</p>
+<h3 id="4-this与apply和call方法">4、this与apply和call方法</h3>
+<p>JavaScript中的函数也是一种特殊的对象类型。每个函数都有call，bind和apply方法。这些方法可用于在函数的执行上下文中将自定义值设置为this。</p>
+<pre><code>function Person(fn, ln) {
+	this.first_name = fn;
+	this.last_name = ln;
+
+	this.displayName = function() {
+		console.log(`Name: ${this.first_name} ${this.last_name}`);
+	}
+}
+
+let person = new Person(&quot;安&quot;, &quot;小艳&quot;);
+person.displayName(); // 输出 Name: 安 小艳
+let person2 = new Person(&quot;董&quot;, &quot;磊超&quot;);
+person2.displayName(); // 输出 Name: 董 磊超
+person.displayName.call(person2); //输出 Name:董 磊超，创建新函数person，让其this指向person2对象
+</code></pre>
+<h3 id="5-this和bind方法">5、this和bind方法</h3>
+<p>该bind方法返回this引用传入的第一个参数的新方法。我们将使用上面的示例来说明该bind方法。</p>
+<pre><code>function Person(fn, ln) {
+	this.first_name = fn;
+	this.last_name = ln;
+
+	this.displayName = function() {
+		console.log(`Name: ${this.first_name} ${this.last_name}`);
+	}
+}
+
+let person = new Person(&quot;安&quot;, &quot;小艳&quot;);
+person.displayName(); // 输出 Name: 安 小艳
+let person2 = new Person(&quot;董&quot;, &quot;磊超&quot;);
+person2.displayName(); // 输出 Name: 董 磊超
+
+let person2Display = person.displayName.bind(person2);  // 新建一个实例person，让它的this值等于person2
+person2Display(); // 输出 Name: 董 磊超
+</code></pre>
+<h3 id="6-this与箭头函数">6、this与箭头函数</h3>
+<p>使用箭头函数时，不会为this创建新值。this继续指向与外部函数相同的对象。</p>
+<pre><code>function Person(fn, ln) {
+        this.first_name = fn;
+        this.last_name = ln;
+    
+        this.displayName = function() {
+            setTimeout(()=&gt;{
+                console.log(`Name: ${this.first_name} ${this.last_name}`);
+            },1000)
+        }
+    }
+let person = new Person(&quot;安&quot;, &quot;小艳&quot;);
+person.displayName(); // 隔1s输出 Name: 安 小艳
+
+</code></pre>
+<p>现在，您可以this通过遵循以下简单规则来确定this的值：</p>
+<ul>
+<li>默认情况下，this是指一个全局对象，对于NodeJS来说是global对象，对于浏览器来说是window对象</li>
+<li>当方法被称为对象的属性时，则this指向父对象</li>
+<li>当使用new运算符调用函数时，则this指向新创建的实例</li>
+<li>当使用call和apply方法调用函数时，则this指向作为call或者apply方法的第一个参数传递的对象</li>
+</ul>
+
+            </div>
+            
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://aanxy.github.io/uYQLf8pTc/">
+                  <h3 class="post-title">
+                    准备要点：
+                  </h3>
+                </a>
+              </div>
+            
+
+            
+              
+                <div id="gitalk-container" data-aos="fade-in"></div>
+              
+
+              
+            
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+<script type="application/javascript">
+
+AOS.init();
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
+</script>
+
+
+  <script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>
+    hljs.initHighlightingOnLoad()
+  </script>
+
+
+
+
+  
+    <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+    <script>
+
+      var gitalk = new Gitalk({
+        clientID: '',
+        clientSecret: '',
+        repo: '',
+        owner: '',
+        admin: [''],
+        id: (location.pathname).substring(0, 49),      // Ensure uniqueness and length less than 50
+        distractionFreeMode: false  // Facebook-like distraction free mode
+      })
+
+      gitalk.render('gitalk-container')
+
+    </script>
+  
+
+  
+
+
+
+
+  </body>
+</html>
