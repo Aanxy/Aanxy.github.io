@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>原型与原型链 | anxy</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="https://aanxy.github.io/favicon.ico?v=1605839961847">
+<link rel="stylesheet" href="https://aanxy.github.io/styles/main.css">
+
+
+  
+    <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css" />
+  
+
+  
+
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+
+
+    <meta name="description" content="1、使用原型可以扩展数组的方法
+2、使用原型可以判断数据类型
+##一、为什么要使用原型
+首先看下面实例，创建person对象
+let person = {};
+person.name = '安';
+person.age = 20;
+pers..." />
+    <meta name="keywords" content="" />
+  </head>
+  <body>
+    <div id="app" class="main">
+
+      <div class="sidebar" :class="{ 'full-height': menuVisible }">
+  <div class="top-container" data-aos="fade-right">
+    <div class="top-header-container">
+      <a class="site-title-container" href="https://aanxy.github.io">
+        <img src="https://aanxy.github.io/images/avatar.png?v=1605839961847" class="site-logo">
+        <h1 class="site-title">anxy</h1>
+      </a>
+      <div class="menu-btn" @click="menuVisible = !menuVisible">
+        <div class="line"></div>
+      </div>
+    </div>
+    <div>
+      
+        
+          <a href="/" class="site-nav">
+            首页
+          </a>
+        
+      
+        
+          <a href="/archives" class="site-nav">
+            归档
+          </a>
+        
+      
+        
+          <a href="/tags" class="site-nav">
+            标签
+          </a>
+        
+      
+        
+          <a href="/post/about" class="site-nav">
+            关于
+          </a>
+        
+      
+    </div>
+  </div>
+  <div class="bottom-container" data-aos="flip-up" data-aos-offset="0">
+    <div class="social-container">
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+    <div class="site-description">
+      温故而知新
+    </div>
+    <div class="site-footer">
+      Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | <a class="rss" href="https://aanxy.github.io/atom.xml" target="_blank">RSS</a>
+    </div>
+  </div>
+</div>
+
+
+      <div class="main-container">
+        <div class="content-container" data-aos="fade-up">
+          <div class="post-detail">
+            <h2 class="post-title">原型与原型链</h2>
+            <div class="post-date">2020-11-16</div>
+            
+            <div class="post-content" v-pre>
+              <p>1、使用原型可以扩展数组的方法<br>
+2、使用原型可以判断数据类型<br>
+##一、为什么要使用原型<br>
+首先看下面实例，创建person对象</p>
+<pre><code>let person = {};
+person.name = '安';
+person.age = 20;
+person.eat = function () {
+  console.log(`${this.name} is eating.`)
+}
+person.sleep = function () {
+  console.log(`${this.name} is sleeping.`)
+}
+</code></pre>
+<p>在我们的程序中可能需要创建多个人，在这种情况下你会怎么做？这时需要创建一个单独的的函数，它用来不断的为你生成一个Person对象</p>
+<ul>
+<li>创建生成Person对象的单独函数</li>
+</ul>
+<pre><code>function Person(name, age) {
+ let person = {};
+ person.name = name;
+ person.age = age;
+ person.eat = function () {
+   console.log(`${this.name} is eating.`)
+ }
+ person.sleep = function () {
+   console.log(`${this.name} is sleeping.`)
+ }
+ return person;
+}
+// Invoke Person function to create persons.
+const person1 = Person('an', 22);
+const person2 = Person('Dong', 34);
+</code></pre>
+<p>以上是一种方法，但是如果有几百万的人，在这种情况下，每次我们创建了一个Person对象就得将其中的eatting方法和sleeping方法存在内存中，内存消耗将会是非常的巨大。</p>
+<ul>
+<li>代替上述操作，如果我们每次可以一次创建这些方法并将其重复用作Person函数的引用，这样，我们将只在内存中创建一次这个方法。</li>
+</ul>
+<pre><code>const PersonMethods = {
+  eat = function () {
+    console.log(`${this.name} is eating.`)
+  },
+  sleep = function () {
+    console.log(`${this.name} is sleeping.`)
+  }
+}
+function Person(name, age) {
+  let person = {};
+  person.name = name;
+  person.age = age;
+  person.eat = PersonMethods.eat;
+  person.sleep = PersonMethods.sleep;
+  return person;
+}
+</code></pre>
+<p>根据上面的示例，我们已经在内存中创建了一个Person对象，并且每次创建新的Person时，都为其提供对该PersonMethods对象的方法的引用，这样就解决了每次消耗内存的问题。</p>
+<ul>
+<li>哇，那太好了吧？我们完了吗？<br>
+不！同样，这个方法也有缺陷。假如以后我们决定向Person添加新的方法，那我们就得必须将该方法添加到PersonMethods中，然后必须修改Person函数以引用该新引入的方法。</li>
+</ul>
+<pre><code>const PersonMethods = {
+  eat = function () {
+    console.log(`${this.name} is eating.`)
+  },
+  sleep = function () {
+    console.log(`${this.name} is sleeping.`)
+  },
+  walk = function () {
+    console.log(`${this.name} is walking.`)
+  },
+}
+function Person(name, age) {
+  let person = {};
+  person.name = name;
+  person.age = age;
+  person.eat = PersonMethods.eat;
+  person.sleep = PersonMethods.sleep;
+  person.walk = PersonMethods.walk;
+  return person;
+}
+</code></pre>
+<p>此时拥有一个与上面类似的更改，并且无需修改所有创建的实例。也就是不需要修改Person对象的方法。这里就用到原型。</p>
+<h2 id="二-原型">二、原型</h2>
+<p>在js中每次创建函数时，js引擎都会向创建的函数添加一个成为prototype的额外属性，此prototype属性是默认情况下具有constructor（构造函数）属性的对象（称为原型对象），该constructor属性指向原型对象为其属性的函数对象<br>
+<img src="https://aanxy.github.io/post-images/1605615648658.png" alt="" loading="lazy"><br>
+prototype属性指向函数的prototype对象，我们可以使用语法<code>functionName.prototype</code>访问函数的prototype属性，从函数的prototype对象开始，我们可以再次通过<code>functionName.prototype.constructor</code>访问该函数对象，下面通过代码来理解这一点！</p>
+<h3 id="使用构造函数创建对象">使用构造函数创建对象</h3>
+<p>现在，让我们编写一个构造函数，该函数接受name和age作为函数的参数，如下所示，并打印其原型对象（prototype）：</p>
+<pre><code>function Person(name, age) {
+  this.name = name;
+  this.age = age;
+}
+console.log(Person.prototype)
+</code></pre>
+<p>控制台输出，如下所示：<br>
+<img src="https://aanxy.github.io/post-images/1605616076861.png" alt="" loading="lazy"><br>
+如上所示，当我们<code>console.log(Person.prototype)</code>时，输出了函数的原型对象，我们可以看到两个属性constructor和_proto_属性(暂时先忘记函数原型对象中的此属性)，然后我们<code>console.log(Person.prototype.constructor)</code><br>
+<img src="https://aanxy.github.io/post-images/1605616396289.png" alt="" loading="lazy"><br>
+看起来很像我们前面定义的Person构造函数。如上硕鼠，当我们创建一个函数时，它会创建另一个叫做原型对象的对象，该对象具有constructor指向该函数对象的属性，而函数本身具有一个叫做prototype的属性指向该原型对象。也就是如下：<br>
+<code>Person.prototype.constructor === Person</code>//true<br>
+<code>Person.prototype === Person.prototype.constructor.prototype</code>//true<br>
+到此，对原型有了一个初步的了解，现在，让我们看啊可能如何使用上述原型对象解决我们之前的问题。让我们看看如何将所有自定义的函数放入原型对象中，而不是为这些对象创建单独的对象（指的是上面PersonMethod对象），然后按如下所示在函数定义中分配他们，会发生什么情况？</p>
+<pre><code>function Person(name, age) {
+  this.name = name;
+  this.age = age;
+}
+Person.prototype.eat = function () {
+    console.log(`${this.name} is eating.`)
+}
+Person.prototype.sleep = function () {
+    console.log(`${this.name} is sleeping.`)
+}
+Person.prototype.walk =function () {
+    console.log(`${this.name} is walking.`)
+}
+const An = new Person('An',22)
+console.log(An)
+</code></pre>
+<p>上述代码在控制台的输出如下：<br>
+<img src="https://aanxy.github.io/post-images/1605617140387.png" alt="" loading="lazy"><br>
+发现新创建的An这个对象没有eat、sleep、walk方法，其实，事实并非如此！，再看我们的控制台，发现在Person的实例An中还有一个_proto_属性，但是我们并没有将该属性添加到我们所创建的而对象，那是为什么呢！让我们看啊可能我们对构造函数做了什么：</p>
+<ul>
+<li>首先，我们定义了构造函数Person</li>
+<li>然后，我们向其原型对象添加了方法</li>
+</ul>
+<blockquote>
+<p>当我们向任何函数的原型对象添加函数或属性时，它可以通过原型对象用于实例</p>
+</blockquote>
+<p>然后让我们看看从Person构造函数创建实例时发生了什么？</p>
+<ul>
+<li>我们使用带有new关键字的Person函数创建了一个具有两个属性name和age的An对象</li>
+<li>然后，在js引擎的背后，它向该实例添加了一个名为_proto_的新属性，它指向Person构造函数对象的Prototype对象，使用以下图来说明：</li>
+</ul>
+<figure data-type="image" tabindex="1"><img src="https://aanxy.github.io/post-images/1605618039581.png" alt="" loading="lazy"></figure>
+
+            </div>
+            
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://aanxy.github.io/Fu-3fbErE/">
+                  <h3 class="post-title">
+                    闭包
+                  </h3>
+                </a>
+              </div>
+            
+
+            
+              
+                <div id="gitalk-container" data-aos="fade-in"></div>
+              
+
+              
+            
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+<script type="application/javascript">
+
+AOS.init();
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
+</script>
+
+
+  <script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>
+    hljs.initHighlightingOnLoad()
+  </script>
+
+
+
+
+  
+    <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+    <script>
+
+      var gitalk = new Gitalk({
+        clientID: '',
+        clientSecret: '',
+        repo: '',
+        owner: '',
+        admin: [''],
+        id: (location.pathname).substring(0, 49),      // Ensure uniqueness and length less than 50
+        distractionFreeMode: false  // Facebook-like distraction free mode
+      })
+
+      gitalk.render('gitalk-container')
+
+    </script>
+  
+
+  
+
+
+
+
+  </body>
+</html>
