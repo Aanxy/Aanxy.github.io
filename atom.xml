@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://aanxy.github.io</id>
     <title>anxy</title>
-    <updated>2020-11-25T06:57:03.001Z</updated>
+    <updated>2020-11-25T08:16:40.393Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://aanxy.github.io"/>
     <link rel="self" href="https://aanxy.github.io/atom.xml"/>
@@ -10,6 +10,13 @@
     <logo>https://aanxy.github.io/images/avatar.png</logo>
     <icon>https://aanxy.github.io/favicon.ico</icon>
     <rights>All rights reserved 2020, anxy</rights>
+    <entry>
+        <title type="html"><![CDATA[原型链]]></title>
+        <id>https://aanxy.github.io/tPVjYrx94/</id>
+        <link href="https://aanxy.github.io/tPVjYrx94/">
+        </link>
+        <updated>2020-11-25T06:57:50.000Z</updated>
+    </entry>
     <entry>
         <title type="html"><![CDATA[js中的this]]></title>
         <id>https://aanxy.github.io/T_gLoUz8Z/</id>
@@ -25,7 +32,7 @@
         <updated>2020-11-16T07:25:13.000Z</updated>
     </entry>
     <entry>
-        <title type="html"><![CDATA[原型与原型链]]></title>
+        <title type="html"><![CDATA[原型]]></title>
         <id>https://aanxy.github.io/3FRUgJV5G/</id>
         <link href="https://aanxy.github.io/3FRUgJV5G/">
         </link>
@@ -37,12 +44,5 @@
         <link href="https://aanxy.github.io/Fu-3fbErE/">
         </link>
         <updated>2020-11-16T03:23:22.000Z</updated>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[es6必掌握内容]]></title>
-        <id>https://aanxy.github.io/wS_FQ-vXn/</id>
-        <link href="https://aanxy.github.io/wS_FQ-vXn/">
-        </link>
-        <updated>2020-11-12T05:56:34.000Z</updated>
     </entry>
 </feed>

@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>原型链 | anxy</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="https://aanxy.github.io/favicon.ico?v=1606292196557">
+<link rel="stylesheet" href="https://aanxy.github.io/styles/main.css">
+
+
+  
+    <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css" />
+  
+
+  
+
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+
+
+    <meta name="description" content="如果你还不懂什么是原型，先请看上一篇文章，再来看这篇文章
+接下来会试着去了解什么是原型链。为了了解这一点，让我们做一个小练习。让我们创建一个简单的对象，然后alert弹出该对象。
+const apple = {}
+alert(apple)
+..." />
+    <meta name="keywords" content="" />
+  </head>
+  <body>
+    <div id="app" class="main">
+
+      <div class="sidebar" :class="{ 'full-height': menuVisible }">
+  <div class="top-container" data-aos="fade-right">
+    <div class="top-header-container">
+      <a class="site-title-container" href="https://aanxy.github.io">
+        <img src="https://aanxy.github.io/images/avatar.png?v=1606292196557" class="site-logo">
+        <h1 class="site-title">anxy</h1>
+      </a>
+      <div class="menu-btn" @click="menuVisible = !menuVisible">
+        <div class="line"></div>
+      </div>
+    </div>
+    <div>
+      
+        
+          <a href="/" class="site-nav">
+            首页
+          </a>
+        
+      
+        
+          <a href="/archives" class="site-nav">
+            归档
+          </a>
+        
+      
+        
+          <a href="/tags" class="site-nav">
+            标签
+          </a>
+        
+      
+        
+          <a href="/post/about" class="site-nav">
+            关于
+          </a>
+        
+      
+    </div>
+  </div>
+  <div class="bottom-container" data-aos="flip-up" data-aos-offset="0">
+    <div class="social-container">
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+    <div class="site-description">
+      温故而知新
+    </div>
+    <div class="site-footer">
+      Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | <a class="rss" href="https://aanxy.github.io/atom.xml" target="_blank">RSS</a>
+    </div>
+  </div>
+</div>
+
+
+      <div class="main-container">
+        <div class="content-container" data-aos="fade-up">
+          <div class="post-detail">
+            <h2 class="post-title">原型链</h2>
+            <div class="post-date">2020-11-25</div>
+            
+            <div class="post-content" v-pre>
+              <p>如果你还不懂什么是原型，先请看上一篇文章，再来看这篇文章</p>
+<p>接下来会试着去了解什么是原型链。为了了解这一点，让我们做一个小练习。让我们创建一个简单的对象，然后alert弹出该对象。</p>
+<pre><code>const apple = {}
+alert(apple)
+</code></pre>
+<p><img src="https://aanxy.github.io/post-images/1606287676194.png" alt="" loading="lazy"><br>
+alert弹出如下：<br>
+<img src="https://aanxy.github.io/post-images/1606287688364.png" alt="" loading="lazy"><br>
+为什么我会输出[project project]？<br>
+我们创建的apple是一个空对象，它没有任何存储上述输出的对象或者属性，在这幕后似乎发生了什么事情，让我们一起探讨一下，首先我们console.log 看看apple对象里面会有什么<br>
+<img src="https://aanxy.github.io/post-images/1606289197739.png" alt="" loading="lazy"><br>
+里面什么都没有，通过扩展看到有一个_proto_属性，里面有很多方法，但是这些都从哪里来呢，这是谁的原型对象，上面方法里有个toString方法，我们输出一下看看<br>
+<img src="https://aanxy.github.io/post-images/1606289386615.png" alt="" loading="lazy"><br>
+由此看书，alert中输出的[project project]来自_proto_属性中的toString方法，在此，有个疑问，这是谁的原型对象呢<br>
+在JavaScript中，有一组内置对象，例如Object，Array，Date，Function等，并且这些对象中的每一个都将附有各自的原型对象。上述情况是通过调用Object构造函数来创建的apple实例。因为<code>const apple = {}</code>  与<code>const apple = new Object()</code>相同，其中Object是内置的构造函数，该函数具有Object.prototype ，它有我们之前看到的所有方法。我们可以通过===进行判断 <code>apple._proto_ === Object.prototype</code><br>
+<img src="https://aanxy.github.io/post-images/1606290049114.png" alt="" loading="lazy"><br>
+结果返回true，说明上述描述是正确的，创建的apple实例指向Object原型对象，由此可以推出，我们创建的任何对象对指向同一个原型对象(Object.prototype)<br>
+通过下图所示的关系图来展现我们讨论的内容<br>
+<img src="https://aanxy.github.io/post-images/1606290251934.png" alt="" loading="lazy"><br>
+还请注意，与其他函数的原型对象不同，Object 构造函数的原型对象__proto__内部没有属性。如果我们控制台记录其值，则应为null。相比之前定义的Person对象的原型对象的_proto_内部不是空的。<br>
+<img src="https://aanxy.github.io/post-images/1606290640466.png" alt="" loading="lazy"><br>
+了解原因 ，首先，我们需要了解JavaScript中的对象查找行为。当我们寻找对象的属性（包括函数声明）时，JavaScript引擎将首先检查对象本身是否存在该属性。如果找不到，它将转到该对象的原型对象并检查该对象。如果找到，它将使用该属性。如果在该原型对象中找不到该对象，则将在<strong>该原型对象的原型对象</strong>上进行查找；如果在该对象中找到该对象，它将使用该属性，否则查找将继续进行，直到找到一个__proto__属性等于null的对象为止。那是JavaScript内置对象的原型对象。为了终止原型查找链，此处设置为null。这称为原型链。这就是为什么我们可以在原型链中看到一些未定义的值。</p>
+<p>让我将所有这些放到一个简单的关系图中，让我们轻松地掌握这一点。<br>
+<img src="https://aanxy.github.io/post-images/1606291166096.png" alt="" loading="lazy"><br>
+此外，其他内置对象如Array，Date，Function等也具有相关联的原型和那些具有特定于该类型的所有其他方法。举例来说，如果我们创建一个简单的数字数组[1、2、3]，则默认的new Array（）构造函数在内部被JavaScript引擎从后台调用。JavaScript也将添加一个__proto__指向新创建的数组实例的指针，该实例指向Array。Array.prototype具有所有与Array操作相关的方法（例如concat, reduce, map, forEachetc ）的原型（即）对象。<br>
+<img src="https://aanxy.github.io/post-images/1606291239854.png" alt="" loading="lazy"><br>
+而且，如果我们记录新创建的数组实例原型对象的原型（即numArray .__ proto <strong>.</strong> proto__），我们也会看到它具有指向另一个对象的指针，该对象应该是Object.prototype。<br>
+<img src="https://aanxy.github.io/post-images/1606291304160.png" alt="" loading="lazy">（因为任何创建的对象都是Object的实例）<br>
+<img src="https://aanxy.github.io/post-images/1606291368892.png" alt="" loading="lazy"></p>
+<blockquote>
+<p>按照规范，JavaScript中的所有内置对象都具有与之关联的原型对象，并且它指向Object.prototype对象。这就是为什么许多人说“ JavaScrtipt中的一切都继承自Object”。</p>
+</blockquote>
+<p>到此我们学完了javascript 原型链的知识点！</p>
+
+            </div>
+            
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://aanxy.github.io/T_gLoUz8Z/">
+                  <h3 class="post-title">
+                    js中的this
+                  </h3>
+                </a>
+              </div>
+            
+
+            
+              
+                <div id="gitalk-container" data-aos="fade-in"></div>
+              
+
+              
+            
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+<script type="application/javascript">
+
+AOS.init();
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
+</script>
+
+
+  <script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>
+    hljs.initHighlightingOnLoad()
+  </script>
+
+
+
+
+  
+    <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+    <script>
+
+      var gitalk = new Gitalk({
+        clientID: '',
+        clientSecret: '',
+        repo: '',
+        owner: '',
+        admin: [''],
+        id: (location.pathname).substring(0, 49),      // Ensure uniqueness and length less than 50
+        distractionFreeMode: false  // Facebook-like distraction free mode
+      })
+
+      gitalk.render('gitalk-container')
+
+    </script>
+  
+
+  
+
+
+
+
+  </body>
+</html>
