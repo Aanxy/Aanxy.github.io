@@ -8,7 +8,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
-<link rel="shortcut icon" href="https://aanxy.github.io/favicon.ico?v=1606274512600">
+<link rel="shortcut icon" href="https://aanxy.github.io/favicon.ico?v=1606287419256">
 <link rel="stylesheet" href="https://aanxy.github.io/styles/main.css">
 
 
@@ -26,12 +26,12 @@
 
     <meta name="description" content="1、使用原型可以扩展数组的方法
 2、使用原型可以判断数据类型
-##一、为什么要使用原型
+一、为什么要使用原型
 首先看下面实例，创建person对象
 let person = {};
 person.name = '安';
 person.age = 20;
-pers..." />
+person..." />
     <meta name="keywords" content="" />
   </head>
   <body>
@@ -41,7 +41,7 @@ pers..." />
   <div class="top-container" data-aos="fade-right">
     <div class="top-header-container">
       <a class="site-title-container" href="https://aanxy.github.io">
-        <img src="https://aanxy.github.io/images/avatar.png?v=1606274512600" class="site-logo">
+        <img src="https://aanxy.github.io/images/avatar.png?v=1606287419256" class="site-logo">
         <h1 class="site-title">anxy</h1>
       </a>
       <div class="menu-btn" @click="menuVisible = !menuVisible">
@@ -108,9 +108,9 @@ pers..." />
             
             <div class="post-content" v-pre>
               <p>1、使用原型可以扩展数组的方法<br>
-2、使用原型可以判断数据类型<br>
-##一、为什么要使用原型<br>
-首先看下面实例，创建person对象</p>
+2、使用原型可以判断数据类型</p>
+<h2 id="一-为什么要使用原型">一、为什么要使用原型</h2>
+<p>首先看下面实例，创建person对象</p>
 <pre><code>let person = {};
 person.name = '安';
 person.age = 20;
@@ -121,7 +121,8 @@ person.sleep = function () {
   console.log(`${this.name} is sleeping.`)
 }
 </code></pre>
-<p>在我们的程序中可能需要创建多个人，在这种情况下你会怎么做？这时需要创建一个单独的的函数，它用来不断的为你生成一个Person对象</p>
+<p>在我们的程序中可能需要创建多个人，在这种情况下你会怎么做？<br>
+在这种情况下我们需要创建一个单独的的函数（机器），它用来不断的为你生产Person对象</p>
 <ul>
 <li>创建生成Person对象的单独函数</li>
 </ul>
@@ -141,9 +142,9 @@ person.sleep = function () {
 const person1 = Person('an', 22);
 const person2 = Person('Dong', 34);
 </code></pre>
-<p>以上是一种方法，但是如果有几百万的人，在这种情况下，每次我们创建了一个Person对象就得将其中的eatting方法和sleeping方法存在内存中，内存消耗将会是非常的巨大。</p>
+<p>以上是一种方法，注意上述代码中的eat方法和sleep方法，每生产一个person对象，我们就得创建一个eat方法和一个sleep方法。但是如果有几百万的人，在这种情况下，每次我们创建了一个Person对象就得将其中的eatting方法和sleeping方法存在内存中，内存消耗将会是非常的巨大。那有什么更好的方法呢？</p>
 <ul>
-<li>代替上述操作，如果我们每次可以一次创建这些方法并将其重复用作Person函数的引用，这样，我们将只在内存中创建一次这个方法。</li>
+<li>代替上述操作，如果我们每次可以一次性创建这些方法并将其重复用作Person函数的引用，这样，我们将只在内存中创建一次这个方法。</li>
 </ul>
 <pre><code>const PersonMethods = {
   eat = function () {
@@ -165,7 +166,7 @@ function Person(name, age) {
 <p>根据上面的示例，我们已经在内存中创建了一个Person对象，并且每次创建新的Person时，都为其提供对该PersonMethods对象的方法的引用，这样就解决了每次消耗内存的问题。</p>
 <ul>
 <li>哇，那太好了吧？我们完了吗？<br>
-不！同样，这个方法也有缺陷。假如以后我们决定向Person添加新的方法，那我们就得必须将该方法添加到PersonMethods中，然后必须修改Person函数以引用该新引入的方法。</li>
+不！同样，这个方法也有缺陷。假如以后我们决定向Person添加新的方法，那我们就得必须将该方法添加到PersonMethods中，然后必须修改Person函数以引用该新引入的方法。这样操作太不方便了！</li>
 </ul>
 <pre><code>const PersonMethods = {
   eat = function () {
@@ -188,11 +189,11 @@ function Person(name, age) {
   return person;
 }
 </code></pre>
-<p>此时拥有一个与上面类似的更改，并且无需修改所有创建的实例。也就是不需要修改Person对象的方法。这里就用到原型。</p>
+<p>此时我们想拥有一个与上面类似的更改，并且无需修改所有创建的实例。也就是不需要修改Person对象的方法。这里就用到原型。到此你知道了原型的一个作用就是可以解决这个问题！，下面我们来看什么是原型</p>
 <h2 id="二-原型">二、原型</h2>
-<p>在js中每次创建函数时，js引擎都会向创建的函数添加一个成为prototype的额外属性，此prototype属性是默认情况下具有constructor（构造函数）属性的对象（称为原型对象），该constructor属性指向原型对象为其属性的函数对象<br>
+<p>在js中，每次创建函数时，js引擎都会向创建的函数添加一个prototype的额外属性，此prototype属性在默认情况下指向一个具有constructor（构造函数）属性的对象（称为原型对象），该对象的constructor属性指向该原型对象为其属性的函数对象，也就是如下图所示：<br>
 <img src="https://aanxy.github.io/post-images/1605615648658.png" alt="" loading="lazy"><br>
-prototype属性指向函数的prototype对象，我们可以使用语法<code>functionName.prototype</code>访问函数的prototype属性，从函数的prototype对象开始，我们可以再次通过<code>functionName.prototype.constructor</code>访问该函数对象，下面通过代码来理解这一点！</p>
+prototype属性指向函数的prototype对象（原型对象），我们可以使用语法<code>functionName.prototype</code>访问函数的prototype属性，从函数的prototype对象开始，我们可以再次通过<code>functionName.prototype.constructor</code>访问该函数对象，下面通过代码来理解这一点！</p>
 <h3 id="使用构造函数创建对象">使用构造函数创建对象</h3>
 <p>现在，让我们编写一个构造函数，该函数接受name和age作为函数的参数，如下所示，并打印其原型对象（prototype）：</p>
 <pre><code>function Person(name, age) {
@@ -226,21 +227,44 @@ const An = new Person('An',22)
 console.log(An)
 </code></pre>
 <p>上述代码在控制台的输出如下：<br>
-<img src="https://aanxy.github.io/post-images/1605617140387.png" alt="" loading="lazy"><br>
-发现新创建的An这个对象没有eat、sleep、walk方法，其实，事实并非如此！，再看我们的控制台，发现在Person的实例An中还有一个_proto_属性，但是我们并没有将该属性添加到我们所创建的而对象，那是为什么呢！让我们看啊可能我们对构造函数做了什么：</p>
+<img src="https://aanxy.github.io/post-images/1606285772487.png" alt="" loading="lazy"><br>
+发现新创建的An这个对象没有eat、sleep、walk方法，其实，事实并非如此！，再看我们的控制台，发现在Person的实例An中还有一个_proto_属性，查看发现它里面有我们定义的sleep、eat、walk等方法<br>
+<img src="https://aanxy.github.io/post-images/1606285964170.png" alt="" loading="lazy"></p>
+<p>但是我们并没有将该属性添加到我们所创建的而对象，那是为什么呢！让我们看看我们对构造函数做了什么：</p>
 <ul>
 <li>首先，我们定义了构造函数Person</li>
 <li>然后，我们向其原型对象添加了方法</li>
 </ul>
 <blockquote>
-<p>当我们向任何函数的原型对象添加函数或属性时，它可以通过原型对象用于实例</p>
+<p>当我们向任何函数的原型对象添加函数或属性时，它可以通过原型对象用于实例<br>
+然后让我们看看从Person构造函数创建实例时发生了什么？</p>
 </blockquote>
-<p>然后让我们看看从Person构造函数创建实例时发生了什么？</p>
 <ul>
 <li>我们使用带有new关键字的Person函数创建了一个具有两个属性name和age的An对象</li>
 <li>然后，在js引擎的背后，它向该实例添加了一个名为_proto_的新属性，它指向Person构造函数对象的Prototype对象，使用以下图来说明：</li>
 </ul>
 <figure data-type="image" tabindex="1"><img src="https://aanxy.github.io/post-images/1605618039581.png" alt="" loading="lazy"></figure>
+<p>因此，基本上，如果 <strong>proto</strong> An中的属性指向Person构造函数对象的Prototype对象，则它应该具有我们定义的那些方法eat、sleep、walk等</p>
+<p>如果我们讨论的所有内容都是正确的，则在Person实例An中的原型属性（<strong>proto</strong>）指向的对象和Person构造函数的原型对象是同一对象。我们通过===进行判断<br>
+<img src="https://aanxy.github.io/post-images/1606286338946.png" alt="" loading="lazy"></p>
+<p>说明我们的验证是正确的 ，<strong>对象实例的原型属性（即__proto__）和Function的prototype属性指向的是同一对象</strong><br>
+<img src="https://aanxy.github.io/post-images/1606286465391.png" alt="" loading="lazy"></p>
+<p>正如我们在控制台输出中看到的那样，新实例Alex的_proto属性指向的对象和Person的原型对象也是同一对象。那么Alex的_proto_和An._proto_是不是也指向同一个Person对象的原型对象呢<br>
+<img src="https://aanxy.github.io/post-images/1606286846421.png" alt="" loading="lazy"><br>
+验证可得：新实例An和新实例Alex的_proto_是相同的，因为他们指向同一个Person的原型对象<br>
+归类所有的就如同下图所示：Person对象的所有实例的_proto_均指向Person对象的原型对象<br>
+<img src="https://aanxy.github.io/post-images/1606286973791.png" alt="" loading="lazy"></p>
+<p>因此，总结一下，我们学到了什么。</p>
+<ul>
+<li>当我们创建一个Function对象（函数）时，JavaSctipt引擎会自动为该对象创建一个Prototype对象，并将原型属性（prototype）添加到该对象中，该对象的原型属性（prototype）可用于访问该对象的Prototype对象，同时原型对象还会添加指向该对象的构造函数属性（constructor）</li>
+<li>然后，当我们从Function对象创建实例时，JavaScript引擎再次向该对象的实例添加添加__proto__属性，可用于访问Function对象的同一原型对象。</li>
+<li>构造函数的此Prototype对象在使用构造函数创建的所有对象之间共享。我们可以将方法和属性添加到此原型对象中，然后这些方法和属性将自动用于其构造函数的实例。</li>
+</ul>
+<p>此可回头来看，就可以知道原型为何可以解决我们上述生产Person的问题了！</p>
+<blockquote>
+<p>注意：这个__proto__在JavaScript世界中通常称为dunder proto 。</p>
+</blockquote>
+<p>希望您对JavaScript中的所谓原型有深入的了解。接下来看我的下一篇文章原型链</p>
 
             </div>
             
